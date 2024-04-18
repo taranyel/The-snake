@@ -1,0 +1,38 @@
+
+html {
+    height: 100%;
+}
+body {
+    display: flex;
+    background: -webkit-linear-gradient(top, #7fc5c9, #deabbe);
+    text-align: center;
+}
+.score {
+    font-family: verdana, serif;
+    font-size: 2em;
+    color: #fff;
+}
+
+.game {
+    flex: 1;
+}
+
+canvas {
+}
+
+#logout_button, #new_game {
+    display: none;
+}
+
+.form {
+    display: none;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+p {
+    margin: unset;
+}

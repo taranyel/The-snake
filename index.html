@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="snake.css">
+    <title>Title</title>
+</head>
+<body>
+<header></header>
+<nav>
+    <button type="button" id="new_game">Start a new game</button>
+    <button type="button" id="pause_game">Pause game</button>
+    <button type="button" id="continue_game">Continue game</button>
+    <button type="button" id="finish_game">Finish game</button>
+</nav>
+<div class="game">
+    <h1 id="score">Score: 0</h1>
+    <canvas id="canvas" height="490px" width="490px"></canvas>
+
+</div>
+<button type="button" id="logout_button">Log out</button>
+<div class="form">
+    <button type="button" id="login_button">Login</button>
+    <button type="button" id="sign_up_button">Sign up</button>
+    <form>
+        <label>
+            <input type="text" name="username" placeholder="Your username" id="username">
+        </label>
+        <p id="bad_username"></p>
+        <label>
+            <input type="password" name="password" placeholder="Your password" id="password">
+        </label>
+        <p id="bad_password"></p>
+        <button type="button" id="submit">Submit</button>
+    </form>
+</div>
+
+<script src="game.js"></script>
+<script src="user.js"></script>
+
+<footer>
+
+</footer>
+</body>
+</html>
