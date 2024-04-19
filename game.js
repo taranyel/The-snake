@@ -96,6 +96,9 @@ class Game {
     snake;
     score;
     food;
+    speed;
+    timer_start;
+    timer_end;
 
     constructor() {
         document.body.addEventListener('keydown', this);
@@ -144,7 +147,23 @@ class Game {
         this.snake_id = 0;
         this.food_id = 0;
         this.food = [];
+        this.speed = 300;
+        this.timer_start = Date.now();
         this.displayScore(0);
+    }
+
+    controlSpeed() {
+        this.timer_end = Date.now();
+        console.log(this.timer_end - this.timer_start);
+
+        if (this.timer_end - this.timer_start >= 15000) {
+            if (this.speed >= 60) {
+                this.speed -= 30;
+                clearInterval(this.snake_id);
+                this.snake_id = setInterval(this.moveSnake.bind(this), this.speed);
+                this.timer_start = Date.now();
+            }
+        }
     }
 
     startGame() {
@@ -153,7 +172,7 @@ class Game {
         this.init();
 
         this.snake.createSnake();
-        this.snake_id = setInterval(this.moveSnake.bind(this), 300);
+        this.snake_id = setInterval(this.moveSnake.bind(this), this.speed);
         this.food_id = setInterval(this.generateFood.bind(this), 4000);
     }
 
@@ -166,7 +185,7 @@ class Game {
     }
 
     continueGame() {
-        this.snake_id = setInterval(this.moveSnake.bind(this), 300);
+        this.snake_id = setInterval(this.moveSnake.bind(this), this.speed);
         this.food_id = setInterval(this.generateFood.bind(this), 4000);
     }
 
@@ -264,6 +283,7 @@ class Game {
         this.snake.body[0].x += current_direction_x;
         this.snake.body[0].y += current_direction_y;
 
+        this.controlSpeed();
         this.eatFood();
         this.gameOver();
 

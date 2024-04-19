@@ -1,12 +1,29 @@
+@import url('https://rsms.me/inter/inter-ui.css');
+
+::selection{background-color: #2d2f36;
+}
 
 html {
     height: 100%;
 }
+
 body {
-    display: flex;
-    background: -webkit-linear-gradient(top, #7fc5c9, #deabbe);
-    text-align: center;
+    background-color: #e2e2e5;
+    font-family: 'Inter UI',sans-serif;
+    margin: unset;
+    height: 100%;
 }
+
+header {
+    height: 8%;
+    display: block;
+}
+
+nav {
+    display: none;
+    flex-direction: column;
+}
+
 .score {
     font-family: verdana, serif;
     font-size: 2em;
@@ -14,25 +31,137 @@ body {
 }
 
 .game {
+    display: none;
     flex: 1;
 }
 
 canvas {
 }
 
-#logout_button, #new_game {
+#logout_button {
     display: none;
+    float: right;
 }
 
 .form {
     display: none;
+    background-color: #474a59;
+    box-shadow: 0 0 40px 16px rgba(0, 0, 0, 0.22);
+    color: #f1f1f2;
+    position: relative;
+    width: 50%;
+}
+
+.profile_buttons {
+    display: flex;
+    flex-direction: column;
+    margin-top: 65px;
+}
+
+.profile_buttons > * {
+    margin: 10px 0 10px 10px;
+    height: 60px;
+    width: 200px;
+    align-self: end;
+    border-right: unset;
+    text-align: left;
+    padding-left: 20px;
+    border-radius: 15px 0 0 15px;
+}
+
+.login_active {
+    background-image: linear-gradient(to right, rgba(248, 206, 248, 0.9), rgba(255, 0, 0, 0.83));
+    transition: 500ms;
+}
+
+.signup_active {
+    background-image: linear-gradient(to right, rgba(246, 241, 73, 0.94), rgba(55, 255, 0, 0.75));
+    transition: 500ms;
+}
+
+.non_active {
+    width: 170px;
+    transition: 500ms;
 }
 
 form {
+    margin: 40px;
+    position: absolute;
     display: flex;
     flex-direction: column;
 }
 
+input {
+    background-color: transparent;
+    border: 0;
+    color: #f2f2f2;
+    font-size: 20px;
+    height: 30px;
+    line-height: 30px;
+    outline: none !important;
+    width: 98%;
+    border-bottom: 2px solid black;
+}
+
+.submit {
+    background-color: #595e70;
+    color: white;
+    transition: color 300ms;
+    cursor: pointer;
+    width: 94%;
+    align-self: center;
+    margin-top: 24px;
+    height: 46px;
+    border-radius: 20px;
+}
+
 p {
     margin: unset;
+    height: 10px;
+    font-size: 0.7em;
+}
+
+.page {
+    display: flex;
+    flex-direction: column;
+    height: 92%;
+    position: absolute;
+    place-content: center;
+    width: 100%;
+}
+
+label {
+    color: #c2c2c5;
+    display: block;
+    font-size: 14px;
+    margin-top: 20px;
+}
+
+.container {
+    display: flex;
+    height: 330px;
+    margin: 0 auto;
+    width: 640px;
+}
+
+svg {
+    position: absolute;
+    width: 320px;
+    height: 100%;
+}
+
+path {
+    fill: none;
+    stroke: url(#linearGradient);
+    stroke-width: 4;
+    stroke-dasharray: 240 1386;
+    transition: 700ms;
+}
+
+.description_form {
+    background-color: white;
+    height: calc(100% - 40px);
+    top: 20px;
+    position: relative;
+    width: 45%;
 }
