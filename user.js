@@ -20,7 +20,6 @@ class User {
 
 class Storage {
     user;
-    password;
 
     constructor() {
         this.user = new User();
@@ -28,7 +27,8 @@ class Storage {
 
     waitForLogin() {
         handleEvents.clearErrorsAndInputs();
-        handleEvents.toggleSubmit(true);
+        submit.removeEventListener("click", this.callSignUp);
+        submit.addEventListener("click", this.callLogin);
         handleEvents.toggleButtons(true);
     }
 
@@ -46,7 +46,8 @@ class Storage {
 
         if (!sessionStorage.getItem("logged_in")) {
             handleEvents.showLoginForm();
-            handleEvents.toggleSubmit(false);
+            submit.removeEventListener("click", this.callLogin);
+            submit.addEventListener("click", this.callSignUp);
         } else {
             handleEvents.hideLoginForm();
         }
@@ -56,7 +57,7 @@ class Storage {
         const username_value = username.value;
         const password_value = password.value;
 
-        if (validation()) {
+        if (loginValidation()) {
             const storage_user = localStorage.getItem(username_value);
             if (!storage_user) {
                 handleEvents.fillError(bad_username, "Wrong username!");
@@ -65,6 +66,7 @@ class Storage {
                 const storage_user_json = JSON.parse(storage_user);
                 if (password_value !== storage_user_json.password) {
                     handleEvents.fillError(bad_password, "Wrong password!");
+                    handleEvents.fillError(bad_username, "");
 
                 } else {
                     sessionStorage.setItem("logged_in", username_value);
@@ -75,7 +77,7 @@ class Storage {
     }
 
     signUp() {
-        if (validation()) {
+        if (loginValidation()) {
             if (localStorage.getItem(username.value)) {
                 handleEvents.fillError(bad_username, "Account is already exists!");
             } else {
@@ -97,11 +99,12 @@ class Storage {
     }
 
     changePassword() {
-        if (validatePassword()) {
+        if (validateNewPassword()) {
             const user = this.getLoggedInUser();
-            user.password = password.value;
+            user.password = new_password.value;
             localStorage.removeItem(user.username);
             localStorage.setItem(user.username, JSON.stringify(user));
+            handleEvents.hideChangePasswordForm();
         }
     }
 
@@ -111,17 +114,20 @@ class Storage {
     }
 
     changeUsername() {
-        if (validateUsername()) {
+        console.log(localStorage)
+        if (validateNewUsername()) {
             if (!localStorage.getItem(username.value)) {
                 const user = this.getLoggedInUser();
                 const old_username = user.username;
-                user.username = username.value;
+                user.username = new_username.value;
                 localStorage.removeItem(old_username);
                 localStorage.setItem(user.username, JSON.stringify(user));
+                handleEvents.hideChangeUsernameForm();
             } else {
-                handleEvents.fillError(bad_username, "Account is already exists!");
+                handleEvents.fillError(bad_new_username, "Account is already exists!");
             }
         }
+        console.log(localStorage)
     }
 }
 
@@ -147,7 +153,7 @@ class HandleEvents {
         this.nav = document.querySelector("nav");
         this.game_screen = document.querySelector(".game_block");
         this.menu_button = document.getElementById("menu_button");
-        this.menu = document.getElementById("menu");
+        this.menu = document.querySelector(".menu");
         this.change_username_button = document.getElementById("change_username_button");
         this.change_password_button = document.getElementById("change_password_button");
         this.change_username_form = document.getElementById("change_username_form");
@@ -159,8 +165,8 @@ class HandleEvents {
         sign_up.addEventListener("click", storage.waitForSignUp.bind(storage));
         this.logout.addEventListener("click", storage.logOut.bind(storage));
         this.menu_button.addEventListener("click", this.toggleMenu.bind(this));
-        this.change_username_button.addEventListener("click", this.showChangeUsernameForm.bind(this));
-        this.change_password_button.addEventListener("click", this.showChangePasswordForm.bind(this));
+        this.change_username_button.addEventListener("click", this.toggleChangeUsernameForm.bind(this));
+        this.change_password_button.addEventListener("click", this.toggleChangePasswordForm.bind(this));
         this.submit_new_username.addEventListener("click", storage.changeUsername.bind(storage));
         this.submit_new_password.addEventListener("click", storage.changePassword.bind(storage));
     }
@@ -173,13 +179,34 @@ class HandleEvents {
         this.login_form.style.display = "flex";
     }
 
-    showChangeUsernameForm() {
-
-        this.change_username_form.style.display = "flex";
+    hideChangeUsernameForm() {
+        this.change_username_form.style.display = "none";
     }
 
-    showChangePasswordForm() {
-        this.change_password_form.style.display = "flex";
+    hideChangePasswordForm() {
+        this.change_password_form.style.display = "none";
+    }
+
+    toggleChangeUsernameForm() {
+        if (this.change_username_button.className === "closed") {
+            this.change_username_button.className = "opened";
+            this.clearErrorsAndInputs();
+            this.change_username_form.style.display = "flex";
+        } else {
+            this.change_username_button.className = "closed"
+            this.hideChangeUsernameForm();
+        }
+    }
+
+    toggleChangePasswordForm() {
+        if (this.change_password_button.className === "closed") {
+            this.change_password_button.className = "opened";
+            this.clearErrorsAndInputs();
+            this.change_password_form.style.display = "flex";
+        } else {
+            this.change_password_button.className = "closed";
+            this.hideChangePasswordForm();
+        }
     }
 
     hideLoginForm() {
@@ -198,18 +225,12 @@ class HandleEvents {
     clearErrorsAndInputs() {
         bad_password.textContent = "";
         bad_username.textContent = "";
+        bad_new_username.textContent = "";
+        bad_new_password.textContent = "";
         username.value = "";
         password.value = "";
-    }
-
-    toggleSubmit(forLogin) {
-        if (forLogin) {
-            submit.removeEventListener("click", storage.callSignUp);
-            submit.addEventListener("click", storage.callLogin);
-        } else {
-            submit.removeEventListener("click", storage.callLogin);
-            submit.addEventListener("click", storage.callSignUp);
-        }
+        new_username.value = "";
+        new_password.value = "";
     }
 
     toggleButtons(forLogin) {
@@ -223,14 +244,14 @@ class HandleEvents {
     }
 
     toggleMenu() {
-        if (this.menu.className === "closed") {
-            this.menu.style.display = "flex";
-            this.menu.className = "opened"
-            this.menu_button.src = "images/menu_opened.png";
-        } else {
-            this.menu.style.display = "none";
-            this.menu.className = "closed";
+        if (this.menu.classList.contains("opened")) {
+            this.menu.classList.remove("opened");
             this.menu_button.src = "images/menu_closed.png";
+        } else {
+            this.hideChangePasswordForm();
+            this.hideChangeUsernameForm();
+            this.menu.classList.add("opened");
+            this.menu_button.src = "images/menu_opened.png";
         }
     }
 }

@@ -27,28 +27,28 @@
             </div>
             <div class="menu_block">
                 <img src="images/menu_closed.png" alt="logo" id="menu_button">
-                <div id="menu" class="closed">
+                <div class="menu">
                     <div class="user_data">
-                        <h2 class="username"></h2>
+                        <h2 class="user_name"></h2>
                     </div>
                     <div class="handle_buttons">
-                        <button type="button" id="change_username_button">Change username</button>
-                        <form id="change_username_form" class="change_field">
-                            <label for="change_username_field"></label>
-                            <input type="text" id="change_username_field" name="change_username_field" class="username">
-                            <p class="bad_username"></p>
-                            <button type="button" id="submit_new_username" class="submit">Submit</button>
+                        <a type="button" id="change_username_button" class="closed">Change username</a>
+                        <form id="change_username_form" class="change_form">
+                            <label for="change_username_field">New username</label>
+                            <input type="text" id="change_username_field" name="change_username_field">
+                            <p id="bad_new_username"></p>
+                            <button type="button" id="submit_new_username">Submit</button>
                         </form>
 
-                        <button type="button" id="change_password_button">Change password</button>
-                        <form id="change_password_form" class="change_field">
-                            <label for="change_password_field"></label>
-                            <input type="text" id="change_password_field" name="change_password_field" class="password">
-                            <p class="bad_password"></p>
-                            <button type="button" id="submit_new_password" class="submit">Submit</button>
+                        <a type="button" id="change_password_button" class="closed">Change password</a>
+                        <form id="change_password_form" class="change_form">
+                            <label for="change_password_field">New password</label>
+                            <input type="text" id="change_password_field" name="change_password_field">
+                            <p id="bad_new_password"></p>
+                            <button type="button" id="submit_new_password">Submit</button>
                         </form>
 
-                        <button type="button" id="delete_account">Delete my account</button>
+                        <a type="button" id="delete_account">Delete my account</a>
                     </div>
                 </div>
             </div>
@@ -85,10 +85,10 @@
                 <form id="login_form">
                     <label for="username">Username</label>
                     <input type="text" name="username" class="username" id="username">
-                    <p class="bad_username"></p>
+                    <p id="bad_username"></p>
                     <label for="password">Password</label>
                     <input type="password" name="password" class="password" id="password">
-                    <p class="bad_password"></p>
+                    <p id="bad_password"></p>
                     <label for="submit"></label>
                     <input type="button" id="submit" class="submit" value="Submit">
                 </form>

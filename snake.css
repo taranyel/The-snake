@@ -20,13 +20,14 @@ body {
 header {
     height: 10%;
     display: block;
+    background-color: #474a59;
 }
 
 nav {
     display: none;
     flex-direction: column;
     width: 25%;
-    margin-top: 65px;
+    margin-top: 67px;
 }
 
 nav > * {
@@ -60,31 +61,78 @@ nav > * {
 
 .menu_block {
     width: 30%;
+    margin-top: 40px;
 }
 
-#menu {
-    display: none;
-    height: 90%;
-    background-color: white;
-    margin-right: 15px;
+.menu {
+    display: flex;
+    background-color: #474a59;
+    width: 20%;
+    height: 70%;
     flex-direction: column;
+    right: 0;
+    position: fixed;
+    transform: translateX(100%);
+    transition: transform 0.2s;
+}
+
+.opened {
+    transform: translateX(0);
 }
 
 #menu_button {
     width: 30px;
     height: 30px;
-    float: right;
-    margin-right: 15px;
     border: 2px solid black;
+    position: fixed;
+    z-index: 1;
+    right: 1rem;
+    cursor: pointer;
 }
 
 .handle_buttons {
     display: flex;
     flex-direction: column;
+    width: 70%;
+    margin-left: 20px;
 }
 
-.change_field {
-    display: none;
+.handle_buttons > a {
+    font-family: "Times New Roman", serif;
+    height: 35px;
+    color: white;
+    cursor: pointer;
+}
+
+.handle_buttons > a:hover {
+    text-decoration: underline;
+}
+
+.change_form {
+    flex-direction: column;
+    background-color: #24272d;
+    margin-bottom: 25px;
+    padding: 10px;
+    transition: 700ms;
+}
+
+.change_form > button {
+    align-self: center;
+    border: unset;
+    width: 55%;
+    height: 25px;
+    border-radius: 15px;
+    transition: 500ms;
+}
+
+.change_form > button:hover {
+    width: 60%;
+    height: 30px;
+    background-color: #c2c2c5;
+}
+
+.change_form > label {
+    margin-top: unset;
 }
 
 #record {
@@ -174,9 +222,16 @@ input {
     border-radius: 20px;
 }
 
-p {
+#bad_password, #bad_username {
     margin: unset;
     height: 10px;
+    font-size: 0.7em;
+}
+
+#bad_new_password, #bad_new_username {
+    color: #c2c2c5;
+    margin: unset;
+    height: 15px;
     font-size: 0.7em;
 }
 
@@ -191,7 +246,6 @@ p {
 .forms {
     display: flex;
     align-self: center;
-    margin-bottom: 11%;
     margin-left: 30%;
 }
 

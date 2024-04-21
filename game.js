@@ -107,7 +107,9 @@ class Game {
         this.record = document.getElementById("record");
 
         this.init();
-        this.displayRecord(JSON.parse(localStorage[this.getUser()]).record);
+        if (sessionStorage.getItem("logged_in")) {
+            this.displayRecord(JSON.parse(localStorage[this.getUser()]).record);
+        }
     }
 
     handleEvent(e) {
