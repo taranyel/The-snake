@@ -107,9 +107,7 @@ class Game {
         this.record = document.getElementById("record");
 
         this.init();
-        console.log(localStorage)
-        console.log(sessionStorage.getItem())
-        this.displayRecord(localStorage[this.getUser()].record);
+        this.displayRecord(JSON.parse(localStorage[this.getUser()]).record);
     }
 
     handleEvent(e) {
@@ -177,6 +175,7 @@ class Game {
         this.showPauseGameButton();
         this.showFinishGameButton();
         this.hideContinueGameButton();
+        this.hideNewGameButton();
 
         this.snake.createSnake();
         this.snake_id = setInterval(this.moveSnake.bind(this), this.speed);
@@ -187,6 +186,7 @@ class Game {
         this.showFinishGameButton();
         this.showContinueGameButton();
         this.hidePauseGameButton();
+        this.hideNewGameButton();
         this.clearIntervals();
         document.body.removeEventListener('keydown', this);
     }
@@ -195,12 +195,15 @@ class Game {
         this.hideFinishGameButton();
         this.hidePauseGameButton();
         this.hideContinueGameButton();
+        this.showNewGameButton();
         this.clearIntervals();
+        this.setRecord();
     }
 
     continueGame() {
         this.showFinishGameButton();
         this.hideContinueGameButton();
+        this.hideNewGameButton();
         this.showPauseGameButton();
         document.body.addEventListener('keydown', this);
         this.snake_id = setInterval(this.moveSnake.bind(this), this.speed);
@@ -285,13 +288,16 @@ class Game {
     }
 
 
-    setRecord(current_score) {
-        const user = this.getUser();
+    setRecord() {
+        const current_score = this.snake.body.length - 1;
+        const user = JSON.parse(localStorage[this.getUser()]);
         if (current_score > user.record) {
-            localStorage[user].record = current_score;
+            user.record = current_score;
+            localStorage.removeItem(user.username);
+            localStorage.setItem(user.username, JSON.stringify(user));
         }
 
-        this.displayRecord(localStorage[user].record);
+        this.displayRecord(JSON.parse(localStorage[user.username]).record);
     }
 
     clearIntervals() {
@@ -302,7 +308,11 @@ class Game {
     isGameOver() {
         if (this.isIn(this.snake.body[0].x, this.snake.body[0].y, this.snake.body, 1)) {
             this.clearIntervals();
-            this.setRecord(this.snake.body.length - 1);
+            this.setRecord();
+            this.showNewGameButton();
+            this.hideFinishGameButton();
+            this.hidePauseGameButton();
+            this.hideContinueGameButton();
         }
     }
 
@@ -340,6 +350,10 @@ class Game {
         canvas.canvas_context.strokeRect(head.x, head.y, canvas.cell_size, canvas.cell_size);
     }
 
+    showNewGameButton() {
+        new_game.style.display = "block";
+    }
+
     showPauseGameButton() {
         pause_game.style.display = "block";
     }
@@ -350,6 +364,10 @@ class Game {
 
     showContinueGameButton() {
         continue_game.style.display = "block";
+    }
+
+    hideNewGameButton() {
+        new_game.style.display = "none";
     }
 
     hidePauseGameButton() {
@@ -379,6 +397,7 @@ pause_game.addEventListener("click", game.pauseGame.bind(game));
 finish_game.addEventListener("click", game.finishGame.bind(game));
 continue_game.addEventListener("click", game.continueGame.bind(game));
 
+game.showNewGameButton();
 game.hideFinishGameButton();
 game.hidePauseGameButton();
 game.hideContinueGameButton();
