@@ -67,6 +67,7 @@ nav > * {
     height: 90%;
     background-color: white;
     margin-right: 15px;
+    flex-direction: column;
 }
 
 #menu_button {
@@ -75,6 +76,15 @@ nav > * {
     float: right;
     margin-right: 15px;
     border: 2px solid black;
+}
+
+.handle_buttons {
+    display: flex;
+    flex-direction: column;
+}
+
+.change_field {
+    display: none;
 }
 
 #record {
@@ -133,7 +143,7 @@ canvas {
     transition: 500ms;
 }
 
-form {
+#login_form {
     margin: 40px;
     position: absolute;
     display: flex;
