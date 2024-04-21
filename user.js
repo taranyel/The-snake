@@ -1,68 +1,35 @@
 class User {
     username;
     password;
+    record;
 
     constructor() {
         this.username = "";
         this.password = "";
+        this.record = 0;
     }
 
     createUser() {
         return {
             "username": this.username,
-            "password": this.password
+            "password": this.password,
+            "record": this.record
         };
     }
 }
 
 class Storage {
     user;
-    logout;
-    form;
-    description_form;
-    // new_game;
-    // pause_game;
-    // finish_game;
-    // continue_game;
-    game_screen;
-    nav;
 
     constructor() {
         this.user = new User();
-        this.logout = document.getElementById("logout_button");
-        this.form = document.querySelector(".form");
-        this.description_form = document.querySelector(".description_form");
-        // this.new_game = document.getElementById("new_game");
-        // this.pause_game = document.getElementById("pause_game");
-        // this.finish_game = document.getElementById("finish_game");
-        // this.continue_game = document.getElementById("continue_game");
-        this.nav = document.querySelector("nav");
-        this.game_screen = document.querySelector(".game");
-
-        log_in.addEventListener("click", this.waitForLogin.bind(this));
-        sign_up.addEventListener("click", this.showForm.bind(this));
-        this.logout.addEventListener("click", this.logOut.bind(this));
-    }
-
-    hideForm() {
-        this.form.style.display = "none";
-        this.description_form.style.display = "none";
-        // this.new_game.style.display = "block";
-        // this.pause_game.style.display = "block";
-        // this.finish_game.style.display = "block";
-        // this.continue_game.style.display = "block";
-        this.nav.style.display = "flex";
-        this.game_screen.style.display = "block";
-        this.logout.style.display = "flex";
     }
 
     waitForLogin() {
-        this.clearErrorsAndInputs();
+        handleEvents.clearErrorsAndInputs();
 
-        submit.removeEventListener("click", this.callSignUp);
-        submit.addEventListener("click", this.callLogin);
-        sign_up.className = "non_active";
-        log_in.className = "login_active";
+        handleEvents.toggleSubmit(true);
+        handleEvents.toggleButtons(true);
     }
 
     callSignUp = () => {
@@ -73,26 +40,15 @@ class Storage {
         this.login(this);
     }
 
-    clearErrorsAndInputs() {
-        bad_password.textContent = "";
-        bad_username.textContent = "";
-        username.value = "";
-        password.value = "";
-    }
-
-    showForm() {
-        this.clearErrorsAndInputs();
-
-        log_in.className = "non_active";
-        sign_up.className = "signup_active";
+    waitForSignUp() {
+        handleEvents.clearErrorsAndInputs();
+        handleEvents.toggleButtons(false);
 
         if (!sessionStorage.getItem("logged_in")) {
-            this.form.style.display = "flex";
-            this.description_form.style.display = "block";
-            submit.removeEventListener("click", this.callLogin);
-            submit.addEventListener("click", this.callSignUp);
+            handleEvents.showForm();
+            handleEvents.toggleSubmit(false);
         } else {
-            this.hideForm();
+            handleEvents.hideForm();
         }
     }
 
@@ -103,17 +59,16 @@ class Storage {
         if (validation()) {
             const storage_user = localStorage.getItem(username_value);
             if (!storage_user) {
-                bad_username.textContent = "Wrong username!";
-                submit.className = "error";
+                handleEvents.fillError(bad_username, "Wrong username!");
 
             } else {
                 const storage_user_json = JSON.parse(storage_user);
                 if (password_value !== storage_user_json.password) {
-                    bad_password.textContent = "Wrong password!";
+                    handleEvents.fillError(bad_password, "Wrong password!");
 
                 } else {
                     sessionStorage.setItem("logged_in", username_value);
-                    this.hideForm();
+                    handleEvents.hideForm();
                 }
             }
         }
@@ -121,9 +76,8 @@ class Storage {
 
     signUp() {
         if (validation()) {
-            const storage_user = localStorage.getItem(username.value);
-            if (storage_user) {
-                bad_username.textContent = "Account is already exists!"
+            if (localStorage.getItem(username.value)) {
+                handleEvents.fillError(bad_username, "Account is already exists!");
             } else {
                 this.user.username = username.value;
                 this.user.password = password.value;
@@ -131,23 +85,117 @@ class Storage {
                 localStorage.setItem(this.user.username, JSON.stringify(this.user.createUser()));
 
                 sessionStorage.setItem("logged_in", this.user.username);
-                this.hideForm();
+                handleEvents.hideForm();
             }
         }
     }
 
     logOut() {
         sessionStorage.removeItem("logged_in");
+        handleEvents.hideGame();
+        this.waitForSignUp();
+    }
+
+    changePassword(new_password) {
+        this.user.password = new_password;
+    }
+
+    changeUsername(new_username) {
+        if (!localStorage.getItem(new_username)) {
+            localStorage.removeItem(this.user.username);
+            this.user.username = new_username;
+            localStorage.setItem(this.user.username, JSON.stringify(this.user.createUser()));
+        } else {
+
+        }
+    }
+}
+
+
+class HandleEvents {
+
+    logout;
+    form;
+    nav;
+    game_screen;
+    menu_button;
+    menu;
+
+    constructor() {
+        this.logout = document.getElementById("logout_button");
+        this.form = document.querySelector(".forms");
+        this.nav = document.querySelector("nav");
+        this.game_screen = document.querySelector(".game_block");
+        this.menu_button = document.getElementById("menu_button");
+        this.menu = document.getElementById("menu");
+
+        log_in.addEventListener("click", storage.waitForLogin.bind(storage));
+        sign_up.addEventListener("click", storage.waitForSignUp.bind(storage));
+        this.logout.addEventListener("click", storage.logOut.bind(storage));
+        this.menu_button.addEventListener("click", this.toggleMenu.bind(this));
+    }
+
+    fillError(field, message) {
+        field.textContent = message;
+    }
+
+    showForm() {
+        this.form.style.display = "flex";
+    }
+
+    hideForm() {
+        this.form.style.display = "none";
+        this.nav.style.display = "flex";
+        this.game_screen.style.display = "flex";
+        this.logout.style.display = "flex";
+    }
+
+    hideGame() {
         this.logout.style.display = "none";
-        // this.new_game.style.display = "none";
-        // this.pause_game.style.display = "none";
-        // this.finish_game.style.display = "none";
-        // this.continue_game.style.display = "none";
         this.nav.style.display = "none";
         this.game_screen.style.display = "none";
-        this.showForm();
+    }
+
+    clearErrorsAndInputs() {
+        bad_password.textContent = "";
+        bad_username.textContent = "";
+        username.value = "";
+        password.value = "";
+    }
+
+    toggleSubmit(forLogin) {
+        if (forLogin) {
+            submit.removeEventListener("click", storage.callSignUp);
+            submit.addEventListener("click", storage.callLogin);
+        } else {
+            submit.removeEventListener("click", storage.callLogin);
+            submit.addEventListener("click", storage.callSignUp);
+        }
+    }
+
+    toggleButtons(forLogin) {
+        if (forLogin) {
+            sign_up.className = "non_active";
+            log_in.className = "login_active";
+        } else {
+            log_in.className = "non_active";
+            sign_up.className = "signup_active";
+        }
+    }
+
+    toggleMenu() {
+        if (this.menu.className === "closed") {
+            this.menu.style.display = "flex";
+            this.menu.className = "opened"
+            this.menu_button.src = "images/menu_opened.png";
+        } else {
+            this.menu.style.display = "none";
+            this.menu.className = "closed";
+            this.menu_button.src = "images/menu_closed.png";
+        }
     }
 }
 
 const storage = new Storage();
-storage.showForm();
+const handleEvents = new HandleEvents();
+storage.waitForSignUp();

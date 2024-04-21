@@ -1,6 +1,7 @@
 @import url('https://rsms.me/inter/inter-ui.css');
 
-::selection{background-color: #2d2f36;
+::selection {
+    background-color: #2d2f36;
 }
 
 html {
@@ -9,33 +10,80 @@ html {
 
 body {
     background-color: #e2e2e5;
-    font-family: 'Inter UI',sans-serif;
+    font-family: 'Inter UI', sans-serif;
     margin: unset;
     height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 header {
-    height: 8%;
+    height: 10%;
     display: block;
 }
 
 nav {
     display: none;
     flex-direction: column;
+    width: 25%;
+    margin-top: 65px;
+}
+
+nav > * {
+    margin-left: 120px;
+    height: 40px;
+    margin-bottom: 15px;
+    width: 200px;
 }
 
 .score {
-    font-family: verdana, serif;
-    font-size: 2em;
-    color: #fff;
+    display: flex;
+    margin-left: 15%;
+    width: 490px;
 }
 
-.game {
-    display: none;
+.score > * {
     flex: 1;
 }
 
+.game_block {
+    display: none;
+    flex-direction: row;
+    width: 75%;
+}
+
+.game {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+}
+
+.menu_block {
+    width: 30%;
+}
+
+#menu {
+    display: none;
+    height: 90%;
+    background-color: white;
+    margin-right: 15px;
+}
+
+#menu_button {
+    width: 30px;
+    height: 30px;
+    float: right;
+    margin-right: 15px;
+    border: 2px solid black;
+}
+
+#record {
+    text-align: right;
+}
+
 canvas {
+    width: 490px;
+    margin-left: 15%;
 }
 
 #logout_button {
@@ -44,12 +92,13 @@ canvas {
 }
 
 .form {
-    display: none;
+    display: flex;
     background-color: #474a59;
     box-shadow: 0 0 40px 16px rgba(0, 0, 0, 0.22);
     color: #f1f1f2;
     position: relative;
-    width: 50%;
+    width: 320px;
+    height: 330px;
 }
 
 .profile_buttons {
@@ -124,10 +173,16 @@ p {
 .page {
     display: flex;
     flex-direction: column;
-    height: 92%;
-    position: absolute;
-    place-content: center;
-    width: 100%;
+    flex: 1;
+    /*place-content: center;*/
+    /*width: 100%;*/
+}
+
+.forms {
+    display: flex;
+    align-self: center;
+    margin-bottom: 11%;
+    margin-left: 30%;
 }
 
 label {
@@ -139,9 +194,7 @@ label {
 
 .container {
     display: flex;
-    height: 330px;
-    margin: 0 auto;
-    width: 640px;
+    flex: 1;
 }
 
 svg {
@@ -160,8 +213,8 @@ path {
 
 .description_form {
     background-color: white;
-    height: calc(100% - 40px);
     top: 20px;
     position: relative;
-    width: 45%;
+    width: 280px;
+    height: 290px;
 }

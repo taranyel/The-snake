@@ -95,6 +95,7 @@ class Game {
     food_id;
     snake;
     score;
+    record;
     food;
     speed;
     timer_start;
@@ -103,8 +104,12 @@ class Game {
     constructor() {
         document.body.addEventListener('keydown', this);
         this.score = document.getElementById("score");
+        this.record = document.getElementById("record");
 
         this.init();
+        console.log(localStorage)
+        console.log(sessionStorage.getItem())
+        this.displayRecord(localStorage[this.getUser()].record);
     }
 
     handleEvent(e) {
@@ -154,7 +159,6 @@ class Game {
 
     controlSpeed() {
         this.timer_end = Date.now();
-        console.log(this.timer_end - this.timer_start);
 
         if (this.timer_end - this.timer_start >= 15000) {
             if (this.speed >= 60) {
@@ -170,6 +174,9 @@ class Game {
         this.clearCanvas();
         this.clearIntervals();
         this.init();
+        this.showPauseGameButton();
+        this.showFinishGameButton();
+        this.hideContinueGameButton();
 
         this.snake.createSnake();
         this.snake_id = setInterval(this.moveSnake.bind(this), this.speed);
@@ -177,14 +184,25 @@ class Game {
     }
 
     pauseGame() {
+        this.showFinishGameButton();
+        this.showContinueGameButton();
+        this.hidePauseGameButton();
         this.clearIntervals();
+        document.body.removeEventListener('keydown', this);
     }
 
     finishGame() {
+        this.hideFinishGameButton();
+        this.hidePauseGameButton();
+        this.hideContinueGameButton();
         this.clearIntervals();
     }
 
     continueGame() {
+        this.showFinishGameButton();
+        this.hideContinueGameButton();
+        this.showPauseGameButton();
+        document.body.addEventListener('keydown', this);
         this.snake_id = setInterval(this.moveSnake.bind(this), this.speed);
         this.food_id = setInterval(this.generateFood.bind(this), 4000);
     }
@@ -208,7 +226,7 @@ class Game {
         let i = this.getRandomInt() * canvas.cell_size;
         let j = this.getRandomInt() * canvas.cell_size;
 
-        while (this.isIn(i, j, this.snake, 0) || this.isIn(i, j, this.food, 0)) {
+        while (this.isIn(i, j, this.snake.body, 0) || this.isIn(i, j, this.food, 0)) {
             i = this.getRandomInt() * canvas.cell_size;
             j = this.getRandomInt() * canvas.cell_size;
         }
@@ -235,6 +253,10 @@ class Game {
         this.score.textContent = "Score: " + score;
     }
 
+    displayRecord(record) {
+        this.record.textContent = "Your record: " + record;
+    }
+
     eatFood() {
         for (let i = 0; i < this.food.length; i++) {
             if ((this.snake.body[0].x === this.food[i].x) && (this.snake.body[0].y === this.food[i].y)) {
@@ -258,14 +280,29 @@ class Game {
         }
     }
 
+    getUser() {
+        return sessionStorage.getItem("logged_in");
+    }
+
+
+    setRecord(current_score) {
+        const user = this.getUser();
+        if (current_score > user.record) {
+            localStorage[user].record = current_score;
+        }
+
+        this.displayRecord(localStorage[user].record);
+    }
+
     clearIntervals() {
         clearInterval(this.snake_id);
         clearInterval(this.food_id);
     }
 
-    gameOver() {
+    isGameOver() {
         if (this.isIn(this.snake.body[0].x, this.snake.body[0].y, this.snake.body, 1)) {
             this.clearIntervals();
+            this.setRecord(this.snake.body.length - 1);
         }
     }
 
@@ -285,7 +322,7 @@ class Game {
 
         this.controlSpeed();
         this.eatFood();
-        this.gameOver();
+        this.isGameOver();
 
         canvas.canvas_context.fillStyle = "blue";
         canvas.canvas_context.fillRect(this.snake.body[0].x, this.snake.body[0].y, canvas.cell_size, canvas.cell_size);
@@ -302,6 +339,30 @@ class Game {
         canvas.canvas_context.clearRect(head.x, head.y, canvas.cell_size, canvas.cell_size);
         canvas.canvas_context.strokeRect(head.x, head.y, canvas.cell_size, canvas.cell_size);
     }
+
+    showPauseGameButton() {
+        pause_game.style.display = "block";
+    }
+
+    showFinishGameButton() {
+        finish_game.style.display = "block";
+    }
+
+    showContinueGameButton() {
+        continue_game.style.display = "block";
+    }
+
+    hidePauseGameButton() {
+        pause_game.style.display = "none";
+    }
+
+    hideFinishGameButton() {
+        finish_game.style.display = "none";
+    }
+
+    hideContinueGameButton() {
+        continue_game.style.display = "none";
+    }
 }
 
 const canvas = new Canvas();
@@ -317,3 +378,7 @@ new_game.addEventListener("click", game.startGame.bind(game));
 pause_game.addEventListener("click", game.pauseGame.bind(game));
 finish_game.addEventListener("click", game.finishGame.bind(game));
 continue_game.addEventListener("click", game.continueGame.bind(game));
+
+game.hideFinishGameButton();
+game.hidePauseGameButton();
+game.hideContinueGameButton();
