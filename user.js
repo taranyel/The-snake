@@ -56,22 +56,20 @@ class Storage {
     login() {
         const username_value = username.value;
         const password_value = password.value;
+        
+        const storage_user = localStorage.getItem(username_value);
+        if (!storage_user) {
+            handleEvents.fillError(bad_username, "Wrong username!");
 
-        if (loginValidation()) {
-            const storage_user = localStorage.getItem(username_value);
-            if (!storage_user) {
-                handleEvents.fillError(bad_username, "Wrong username!");
+        } else {
+            const storage_user_json = JSON.parse(storage_user);
+            if (password_value !== storage_user_json.password) {
+                handleEvents.fillError(bad_password, "Wrong password!");
+                handleEvents.fillError(bad_username, "");
 
             } else {
-                const storage_user_json = JSON.parse(storage_user);
-                if (password_value !== storage_user_json.password) {
-                    handleEvents.fillError(bad_password, "Wrong password!");
-                    handleEvents.fillError(bad_username, "");
-
-                } else {
-                    sessionStorage.setItem("logged_in", username_value);
-                    handleEvents.hideLoginForm();
-                }
+                sessionStorage.setItem("logged_in", username_value);
+                handleEvents.hideLoginForm();
             }
         }
     }
@@ -98,6 +96,13 @@ class Storage {
         this.waitForSignUp();
     }
 
+    deleteAccount() {
+        if (window.confirm("Do you really want to delete your account?")) {
+            localStorage.removeItem(sessionStorage.getItem("logged_in"));
+            this.logOut();
+        }
+    }
+
     changePassword() {
         if (validateNewPassword()) {
             const user = this.getLoggedInUser();
@@ -105,6 +110,7 @@ class Storage {
             localStorage.removeItem(user.username);
             localStorage.setItem(user.username, JSON.stringify(user));
             handleEvents.hideChangePasswordForm();
+            window.alert("Password was successfully changed!");
         }
     }
 
@@ -122,7 +128,9 @@ class Storage {
                 user.username = new_username.value;
                 localStorage.removeItem(old_username);
                 localStorage.setItem(user.username, JSON.stringify(user));
+                sessionStorage["logged_in"] = new_username.value;
                 handleEvents.hideChangeUsernameForm();
+                location.reload();
             } else {
                 handleEvents.fillError(bad_new_username, "Account is already exists!");
             }
@@ -134,7 +142,6 @@ class Storage {
 
 class HandleEvents {
 
-    logout;
     login_form;
     nav;
     game_screen;
@@ -143,9 +150,8 @@ class HandleEvents {
     change_username_form;
     change_password_button;
     change_password_form;
-    submit_new_username;
-    submit_new_password;
-    menu;
+    delete_account;
+    logout;
 
     constructor() {
         this.logout = document.getElementById("logout_button");
@@ -153,13 +159,13 @@ class HandleEvents {
         this.nav = document.querySelector("nav");
         this.game_screen = document.querySelector(".game_block");
         this.menu_button = document.getElementById("menu_button");
-        this.menu = document.querySelector(".menu");
         this.change_username_button = document.getElementById("change_username_button");
         this.change_password_button = document.getElementById("change_password_button");
         this.change_username_form = document.getElementById("change_username_form");
         this.change_password_form = document.getElementById("change_password_form");
-        this.submit_new_username = document.getElementById("submit_new_username");
-        this.submit_new_password = document.getElementById("submit_new_password");
+        const submit_new_username = document.getElementById("submit_new_username");
+        const submit_new_password = document.getElementById("submit_new_password");
+        this.delete_account = document.getElementById("delete_account");
 
         log_in.addEventListener("click", storage.waitForLogin.bind(storage));
         sign_up.addEventListener("click", storage.waitForSignUp.bind(storage));
@@ -167,8 +173,10 @@ class HandleEvents {
         this.menu_button.addEventListener("click", this.toggleMenu.bind(this));
         this.change_username_button.addEventListener("click", this.toggleChangeUsernameForm.bind(this));
         this.change_password_button.addEventListener("click", this.toggleChangePasswordForm.bind(this));
-        this.submit_new_username.addEventListener("click", storage.changeUsername.bind(storage));
-        this.submit_new_password.addEventListener("click", storage.changePassword.bind(storage));
+        submit_new_username.addEventListener("click", storage.changeUsername.bind(storage));
+        submit_new_password.addEventListener("click", storage.changePassword.bind(storage));
+        this.delete_account.addEventListener("click", storage.deleteAccount.bind(storage));
+        this.showUsername();
     }
 
     fillError(field, message) {
@@ -244,15 +252,22 @@ class HandleEvents {
     }
 
     toggleMenu() {
-        if (this.menu.classList.contains("opened")) {
-            this.menu.classList.remove("opened");
+        const menu = document.querySelector(".menu");
+
+        if (menu.classList.contains("opened")) {
+            menu.classList.remove("opened");
             this.menu_button.src = "images/menu_closed.png";
         } else {
             this.hideChangePasswordForm();
             this.hideChangeUsernameForm();
-            this.menu.classList.add("opened");
+            menu.classList.add("opened");
             this.menu_button.src = "images/menu_opened.png";
         }
+    }
+
+    showUsername() {
+        const username_show = document.querySelector(".user_name");
+        username_show.textContent = sessionStorage.getItem("logged_in");
     }
 }
 

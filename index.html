@@ -11,7 +11,7 @@
 </header>
 <div class="page">
     <div class="container">
-        <nav>
+        <nav class="start">
             <button type="button" id="new_game">Start a new game</button>
             <button type="button" id="pause_game">Pause game</button>
             <button type="button" id="continue_game">Continue game</button>
@@ -20,8 +20,10 @@
         <section class="game_block">
             <div class="game">
                 <div class="score">
-                    <h1 id="score">Score: 0</h1>
-                    <h1 id="record"></h1>
+                    <div class="score_block">
+                        <h1 id="score">Score: 0</h1>
+                        <h1 id="record"></h1>
+                    </div>
                 </div>
                 <canvas id="canvas" height="490px" width="490px"></canvas>
             </div>
@@ -29,6 +31,7 @@
                 <img src="images/menu_closed.png" alt="logo" id="menu_button">
                 <div class="menu">
                     <div class="user_data">
+                        <img src="images/default_icon.png" alt="icon">
                         <h2 class="user_name"></h2>
                     </div>
                     <div class="handle_buttons">
@@ -43,7 +46,7 @@
                         <a type="button" id="change_password_button" class="closed">Change password</a>
                         <form id="change_password_form" class="change_form">
                             <label for="change_password_field">New password</label>
-                            <input type="text" id="change_password_field" name="change_password_field">
+                            <input type="password" id="change_password_field" name="change_password_field">
                             <p id="bad_new_password"></p>
                             <button type="button" id="submit_new_password">Submit</button>
                         </form>

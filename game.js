@@ -100,14 +100,22 @@ class Game {
     speed;
     timer_start;
     timer_end;
+    score_block
+    game_block;
+    nav;
 
     constructor() {
         document.body.addEventListener('keydown', this);
         this.score = document.getElementById("score");
         this.record = document.getElementById("record");
+        this.score_block = document.querySelector(".score");
+        this.nav = document.querySelector("nav");
+        this.game_block = document.querySelector(".game_block");
+
 
         this.init();
-        if (sessionStorage.getItem("logged_in")) {
+
+        if (sessionStorage.getItem("logged_in") !== null) {
             this.displayRecord(JSON.parse(localStorage[this.getUser()]).record);
         }
     }
@@ -154,6 +162,14 @@ class Game {
         this.food = [];
         this.speed = 300;
         this.timer_start = Date.now();
+
+        this.score_block.className = "score";
+        this.game_block.classList.remove("game_over")
+        const game_over_h = document.getElementById("game_over_h");
+        if (game_over_h) {
+            this.score_block.removeChild(game_over_h);
+            this.score_block.removeChild(new_game);
+        }
         this.displayScore(0);
     }
 
@@ -179,6 +195,9 @@ class Game {
         this.hideContinueGameButton();
         this.hideNewGameButton();
 
+        const game_block = document.querySelector(".game");
+        game_block.style.display = "flex";
+        this.nav.classList.remove("start");
         this.snake.createSnake();
         this.snake_id = setInterval(this.moveSnake.bind(this), this.speed);
         this.food_id = setInterval(this.generateFood.bind(this), 4000);
@@ -200,6 +219,7 @@ class Game {
         this.showNewGameButton();
         this.clearIntervals();
         this.setRecord();
+        this.showGameOver("Game finished");
     }
 
     continueGame() {
@@ -289,7 +309,6 @@ class Game {
         return sessionStorage.getItem("logged_in");
     }
 
-
     setRecord() {
         const current_score = this.snake.body.length - 1;
         const user = JSON.parse(localStorage[this.getUser()]);
@@ -307,6 +326,16 @@ class Game {
         clearInterval(this.food_id);
     }
 
+    showGameOver(message) {
+        this.score_block.className = "game_over_score";
+        const game_over_h = document.createElement("h1");
+        game_over_h.textContent = message;
+        game_over_h.id = "game_over_h";
+        this.score_block.append(new_game);
+        this.score_block.append(game_over_h);
+        this.game_block.classList.add("game_over")
+    }
+
     isGameOver() {
         if (this.isIn(this.snake.body[0].x, this.snake.body[0].y, this.snake.body, 1)) {
             this.clearIntervals();
@@ -315,6 +344,7 @@ class Game {
             this.hideFinishGameButton();
             this.hidePauseGameButton();
             this.hideContinueGameButton();
+            this.showGameOver("Game over");
         }
     }
 

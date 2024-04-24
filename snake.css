@@ -18,7 +18,7 @@ body {
 }
 
 header {
-    height: 10%;
+    height: 13%;
     display: block;
     background-color: #474a59;
 }
@@ -30,6 +30,17 @@ nav {
     margin-top: 67px;
 }
 
+.start {
+    flex: 1;
+    align-self: center;
+    margin-top: unset;
+}
+
+.start #new_game {
+    align-self: center;
+    margin-left: unset;
+}
+
 nav > * {
     margin-left: 120px;
     height: 40px;
@@ -37,26 +48,26 @@ nav > * {
     width: 200px;
 }
 
-.score {
+.score_block {
     display: flex;
-    margin-left: 15%;
     width: 490px;
 }
 
-.score > * {
+.score_block > * {
     flex: 1;
 }
 
 .game_block {
     display: none;
     flex-direction: row;
-    width: 75%;
 }
 
 .game {
-    display: flex;
+    display: none;
     flex-direction: column;
-    width: 70%;
+    width: 100%;
+    margin-left: 20%;
+    z-index: 0;
 }
 
 .menu_block {
@@ -68,7 +79,7 @@ nav > * {
     display: flex;
     background-color: #474a59;
     width: 20%;
-    height: 70%;
+    height: 80%;
     flex-direction: column;
     right: 0;
     position: fixed;
@@ -76,8 +87,59 @@ nav > * {
     transition: transform 0.2s;
 }
 
+.user_data {
+    display: flex;
+}
+
+.user_data img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    margin: 20px;
+}
+
+.user_name {
+    color: white;
+}
+
 .opened {
     transform: translateX(0);
+}
+
+.game_over {
+    background-color: rgb(45, 46, 56);
+    width: 50%;
+    height: 95%;
+}
+
+.game_over_score {
+    position: fixed;
+    height: 80%;
+    background-color: rgb(45, 46, 56, 90%);
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+}
+
+.game_over_score > * {
+    align-self: center;
+    font-size: 1.5em;
+    order: 1;
+}
+
+.game_over_score #new_game {
+    height: 50px;
+    margin-top: 100px;
+}
+
+.game_over_score .score_block {
+    margin-top: 50px;
+}
+
+#game_over_h {
+    font-size: 4em;
+    color: yellow;
+    order: 0;
 }
 
 #menu_button {
@@ -94,7 +156,7 @@ nav > * {
     display: flex;
     flex-direction: column;
     width: 70%;
-    margin-left: 20px;
+    margin: 50px 0 0 20px;
 }
 
 .handle_buttons > a {
@@ -141,7 +203,6 @@ nav > * {
 
 canvas {
     width: 490px;
-    margin-left: 15%;
 }
 
 #logout_button {
