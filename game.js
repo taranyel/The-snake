@@ -1,13 +1,13 @@
 class Canvas {
     canvas = document.getElementById("canvas");
-    canvas_context = this.canvas.getContext("2d")
+    context = this.canvas.getContext("2d")
     cell_size = 35;
     cell_amount = 14;
 
     drawGrid() {
         for (let x = 0; x < this.canvas.height; x += this.cell_size) {
             for (let y = 0; y < this.canvas.width; y += this.cell_size) {
-                this.canvas_context.strokeRect(x, y, this.cell_size, this.cell_size);
+                this.context.strokeRect(x, y, this.cell_size, this.cell_size);
             }
         }
     }
@@ -44,8 +44,8 @@ class Snake {
     }
 
     createSnake() {
-        canvas.canvas_context.fillStyle = "blue";
-        canvas.canvas_context.fillRect(0, this.minimal_move, canvas.cell_size, canvas.cell_size)
+        canvas.context.fillStyle = "darkgreen";
+        canvas.context.fillRect(0, this.minimal_move, canvas.cell_size, canvas.cell_size);
     }
 
     checkBorder(current_coordinate, direction) {
@@ -163,7 +163,7 @@ class Game {
         this.speed = 300;
         this.timer_start = Date.now();
 
-        this.score_block.className = "score";
+        this.score_block.classList.remove("game_over_score");
         this.game_block.classList.remove("game_over")
         const game_over_h = document.getElementById("game_over_h");
         if (game_over_h) {
@@ -259,8 +259,10 @@ class Game {
         food.x = i;
         food.y = j;
 
-        canvas.canvas_context.fillStyle = "red";
-        canvas.canvas_context.fillRect(food.x, food.y, canvas.cell_size, canvas.cell_size);
+        const image = document.getElementById("food_icon");
+        canvas.context.drawImage(image, food.x, food.y, canvas.cell_size, canvas.cell_size);
+        // canvas.canvas_context.fillStyle = "red";
+        // canvas.canvas_context.fillRect(food.x, food.y, canvas.cell_size, canvas.cell_size);
 
         //setTimeout(this.removeFood.bind(this, food), 4000);
     }
@@ -270,16 +272,16 @@ class Game {
     }
 
     removeFood(food) {
-        canvas.canvas_context.clearRect(food.x, food.y, canvas.cell_size, canvas.cell_size);
-        canvas.canvas_context.strokeRect(food.x, food.y, canvas.cell_size, canvas.cell_size);
+        canvas.context.clearRect(food.x, food.y, canvas.cell_size, canvas.cell_size);
+        canvas.context.strokeRect(food.x, food.y, canvas.cell_size, canvas.cell_size);
     }
 
     displayScore(score) {
-        this.score.textContent = "Score: " + score;
+        this.score.textContent = score;
     }
 
     displayRecord(record) {
-        this.record.textContent = "Your record: " + record;
+        this.record.textContent = record;
     }
 
     eatFood() {
@@ -295,13 +297,13 @@ class Game {
 
     clearCanvas() {
         for (let i = 0; i < this.snake.body.length; i++) {
-            canvas.canvas_context.clearRect(this.snake.body[i].x, this.snake.body[i].y, canvas.cell_size, canvas.cell_size);
-            canvas.canvas_context.strokeRect(this.snake.body[i].x, this.snake.body[i].y, canvas.cell_size, canvas.cell_size);
+            canvas.context.clearRect(this.snake.body[i].x, this.snake.body[i].y, canvas.cell_size, canvas.cell_size);
+            canvas.context.strokeRect(this.snake.body[i].x, this.snake.body[i].y, canvas.cell_size, canvas.cell_size);
         }
 
         for (let i = 0; i < this.food.length; i++) {
-            canvas.canvas_context.clearRect(this.food[i].x, this.food[i].y, canvas.cell_size, canvas.cell_size);
-            canvas.canvas_context.strokeRect(this.food[i].x, this.food[i].y, canvas.cell_size, canvas.cell_size);
+            canvas.context.clearRect(this.food[i].x, this.food[i].y, canvas.cell_size, canvas.cell_size);
+            canvas.context.strokeRect(this.food[i].x, this.food[i].y, canvas.cell_size, canvas.cell_size);
         }
     }
 
@@ -327,7 +329,7 @@ class Game {
     }
 
     showGameOver(message) {
-        this.score_block.className = "game_over_score";
+        this.score_block.classList.add("game_over_score");
         const game_over_h = document.createElement("h1");
         game_over_h.textContent = message;
         game_over_h.id = "game_over_h";
@@ -366,20 +368,21 @@ class Game {
         this.eatFood();
         this.isGameOver();
 
-        canvas.canvas_context.fillStyle = "blue";
-        canvas.canvas_context.fillRect(this.snake.body[0].x, this.snake.body[0].y, canvas.cell_size, canvas.cell_size);
+        canvas.context.fillStyle = "darkgreen";
+        canvas.context.fillRect(this.snake.body[0].x, this.snake.body[0].y, canvas.cell_size, canvas.cell_size);
 
         for (let i = 1; i < this.snake.body.length; i++) {
             let temp = this.snake.body[i];
             this.snake.body[i] = head;
-            canvas.canvas_context.fillStyle = "blue";
-            canvas.canvas_context.fillRect(this.snake.body[i].x, this.snake.body[i].y, canvas.cell_size, canvas.cell_size);
+
+            canvas.context.fillStyle = "darkgreen";
+            canvas.context.fillRect(this.snake.body[i].x, this.snake.body[i].y, canvas.cell_size, canvas.cell_size);
 
             head = temp;
         }
 
-        canvas.canvas_context.clearRect(head.x, head.y, canvas.cell_size, canvas.cell_size);
-        canvas.canvas_context.strokeRect(head.x, head.y, canvas.cell_size, canvas.cell_size);
+        canvas.context.clearRect(head.x, head.y, canvas.cell_size, canvas.cell_size);
+        canvas.context.strokeRect(head.x, head.y, canvas.cell_size, canvas.cell_size);
     }
 
     showNewGameButton() {

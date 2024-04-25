@@ -3,26 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="snake.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>The snake</title>
 </head>
 <body>
 <header>
-    <button type="button" id="logout_button">Log out</button>
+    <a type="button" id="logout_button">Log out</a>
 </header>
 <div class="page">
     <div class="container">
         <nav class="start">
-            <button type="button" id="new_game">Start a new game</button>
-            <button type="button" id="pause_game">Pause game</button>
-            <button type="button" id="continue_game">Continue game</button>
-            <button type="button" id="finish_game">Finish game</button>
+            <a type="button" id="new_game">Start a new game</a>
+            <a type="button" id="pause_game" class="nav_button"><span>Pause game</span></a>
+            <a type="button" id="continue_game" class="nav_button"><span>Continue game</span></a>
+            <a type="button" id="finish_game" class="nav_button"><span>Finish game</span></a>
         </nav>
         <section class="game_block">
             <div class="game">
+                <img id="food_icon" src="images/food_icon.png" alt="food_icon"/>
                 <div class="score">
                     <div class="score_block">
-                        <h1 id="score">Score: 0</h1>
-                        <h1 id="record"></h1>
+                        <div class="current_score">
+                            <img src="images/food_icon.png" alt="score">
+                            <h1 id="score">0</h1>
+                        </div>
+
+                        <div class="record_score">
+                            <img src="images/record_icon.png" alt="record">
+                            <h1 id="record"></h1>
+                        </div>
                     </div>
                 </div>
                 <canvas id="canvas" height="490px" width="490px"></canvas>
