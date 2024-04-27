@@ -8,7 +8,9 @@
 </head>
 <body>
 <header>
-    <a type="button" id="logout_button">Log out</a>
+    <a type="button" id="logout_button">
+        <i class="fa fa-sign-out"></i>
+    </a>
 </header>
 <div class="page">
     <div class="container">
@@ -24,12 +26,14 @@
                 <div class="score">
                     <div class="score_block">
                         <div class="current_score">
-                            <img src="images/food_icon.png" alt="score">
+                            <i class="fa fa-bug"></i>
+<!--                            <img src="images/food_icon.png" alt="score">-->
                             <h1 id="score">0</h1>
                         </div>
 
                         <div class="record_score">
-                            <img src="images/record_icon.png" alt="record">
+                            <i class="fa fa-trophy"></i>
+<!--                            <img src="images/record_icon.png" alt="record">-->
                             <h1 id="record"></h1>
                         </div>
                     </div>
@@ -37,7 +41,8 @@
                 <canvas id="canvas" height="490px" width="490px"></canvas>
             </div>
             <div class="menu_block">
-                <img src="images/menu_closed.png" alt="logo" id="menu_button">
+                <i class="fa fa-bars" id="menu_button"></i>
+<!--                <img src="images/menu_closed.png" alt="logo" id="menu_button">-->
                 <div class="menu">
                     <div class="user_data">
                         <img src="images/default_icon.png" alt="icon">
@@ -60,7 +65,10 @@
                             <button type="button" id="submit_new_password">Submit</button>
                         </form>
 
-                        <a type="button" id="delete_account">Delete my account</a>
+                        <a type="button" id="delete_account">
+                            Delete my account
+                            <i class="fa fa-trash-o"></i>
+                        </a>
                     </div>
                 </div>
             </div>

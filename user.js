@@ -91,6 +91,7 @@ class Storage {
     }
 
     logOut() {
+        location.reload();
         sessionStorage.removeItem("logged_in");
         handleEvents.hideGame();
         this.waitForSignUp();
@@ -222,6 +223,7 @@ class HandleEvents {
         this.nav.style.display = "flex";
         this.game_screen.style.display = "flex";
         this.logout.style.display = "flex";
+        handleEvents.showUsername();
     }
 
     hideGame() {
@@ -256,12 +258,12 @@ class HandleEvents {
 
         if (menu.classList.contains("opened")) {
             menu.classList.remove("opened");
-            this.menu_button.src = "images/menu_closed.png";
+            this.menu_button.className = "fa fa-bars";
         } else {
             this.hideChangePasswordForm();
             this.hideChangeUsernameForm();
             menu.classList.add("opened");
-            this.menu_button.src = "images/menu_opened.png";
+            this.menu_button.className = "fa fa-times";
         }
     }
 

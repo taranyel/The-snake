@@ -7,9 +7,28 @@ class Canvas {
     drawGrid() {
         for (let x = 0; x < this.canvas.height; x += this.cell_size) {
             for (let y = 0; y < this.canvas.width; y += this.cell_size) {
-                this.context.strokeRect(x, y, this.cell_size, this.cell_size);
+                this.context.fillStyle = this.getColor(x, y);
+                this.context.fillRect(x, y, this.cell_size, this.cell_size);
             }
         }
+    }
+
+    getColor(x, y) {
+        let color;
+        if ((y % 2) === 0) {
+            if ((x % 2) === 0) {
+                color = ["156", "204", "45"];
+            } else {
+                color = ["75", "120", "30"];
+            }
+        } else {
+            if ((x % 2) === 0) {
+                color = ["75", "120", "30"];
+            } else {
+                color = ["156", "204", "45"];
+            }
+        }
+        return "rgb(" + color[0] + "," + color[1] + "," + color[2] + "," + "80%)";
     }
 }
 
@@ -44,7 +63,7 @@ class Snake {
     }
 
     createSnake() {
-        canvas.context.fillStyle = "darkgreen";
+        canvas.context.fillStyle = "#041530";
         canvas.context.fillRect(0, this.minimal_move, canvas.cell_size, canvas.cell_size);
     }
 
@@ -219,7 +238,7 @@ class Game {
         this.showNewGameButton();
         this.clearIntervals();
         this.setRecord();
-        this.showGameOver("Game finished");
+        this.showGameOver("Game ended");
     }
 
     continueGame() {
@@ -298,12 +317,14 @@ class Game {
     clearCanvas() {
         for (let i = 0; i < this.snake.body.length; i++) {
             canvas.context.clearRect(this.snake.body[i].x, this.snake.body[i].y, canvas.cell_size, canvas.cell_size);
-            canvas.context.strokeRect(this.snake.body[i].x, this.snake.body[i].y, canvas.cell_size, canvas.cell_size);
+            canvas.context.fillStyle = canvas.getColor(this.snake.body[i].x, this.snake.body[i].y);
+            canvas.context.fillRect(this.snake.body[i].x, this.snake.body[i].y, canvas.cell_size, canvas.cell_size);
         }
 
         for (let i = 0; i < this.food.length; i++) {
             canvas.context.clearRect(this.food[i].x, this.food[i].y, canvas.cell_size, canvas.cell_size);
-            canvas.context.strokeRect(this.food[i].x, this.food[i].y, canvas.cell_size, canvas.cell_size);
+            canvas.context.fillStyle = canvas.getColor(this.food[i].x, this.food[i].y);
+            canvas.context.fillRect(this.food[i].x, this.food[i].y, canvas.cell_size, canvas.cell_size);
         }
     }
 
@@ -368,21 +389,23 @@ class Game {
         this.eatFood();
         this.isGameOver();
 
-        canvas.context.fillStyle = "darkgreen";
+        canvas.context.fillStyle = "#041530";
         canvas.context.fillRect(this.snake.body[0].x, this.snake.body[0].y, canvas.cell_size, canvas.cell_size);
 
         for (let i = 1; i < this.snake.body.length; i++) {
             let temp = this.snake.body[i];
             this.snake.body[i] = head;
 
-            canvas.context.fillStyle = "darkgreen";
+            canvas.context.fillStyle = "#041530";
             canvas.context.fillRect(this.snake.body[i].x, this.snake.body[i].y, canvas.cell_size, canvas.cell_size);
 
             head = temp;
         }
 
         canvas.context.clearRect(head.x, head.y, canvas.cell_size, canvas.cell_size);
-        canvas.context.strokeRect(head.x, head.y, canvas.cell_size, canvas.cell_size);
+        canvas.context.fillStyle = canvas.getColor(head.x, head.y);
+        canvas.context.fillRect(head.x, head.y, canvas.cell_size, canvas.cell_size);
+        //canvas.context.strokeRect(head.x, head.y, canvas.cell_size, canvas.cell_size);
     }
 
     showNewGameButton() {

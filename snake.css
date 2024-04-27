@@ -9,7 +9,7 @@ html {
 }
 
 body {
-    background-color: #e2e2e5;
+    background-color: #dffac8;
     font-family: 'Inter UI', sans-serif;
     margin: unset;
     height: 100%;
@@ -20,7 +20,7 @@ body {
 header {
     height: 13%;
     display: block;
-    background-color: #474a59;
+    background-color: rgba(26, 40, 5, 0.92);
 }
 
 nav {
@@ -40,6 +40,18 @@ nav {
 
 #food_icon {
     display: none;
+}
+
+.fa-trophy {
+    color: gold;
+}
+
+.score_block i {
+    font-size: 2em;
+}
+
+.record_score {
+    flex-direction: row-reverse;
 }
 
 .start #new_game {
@@ -182,8 +194,13 @@ nav #finish_game:active {
 }
 
 .menu_block {
-    width: 30%;
+    //width: 30%;
     margin-top: 40px;
+}
+
+#delete_account {
+    color: #FA8E8E;
+    margin-top: 30px;
 }
 
 .menu {
@@ -224,7 +241,6 @@ nav #finish_game:active {
 }
 
 .game_over .game {
-    margin-left: 10%;
 }
 
 .game_over_score {
@@ -235,10 +251,10 @@ nav #finish_game:active {
     flex-direction: column;
     z-index: 2;
     color: white;
+    width: 35%;
 }
 
 .game_over_score > * {
-    align-self: center;
     font-size: 1.5em;
     order: 1;
 }
@@ -255,6 +271,7 @@ nav #finish_game:active {
     box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
     transform: scale(1);
     animation: pulse 2s infinite;
+    margin-left: 15%;
 }
 
 @keyframes pulse {
@@ -284,7 +301,7 @@ nav #finish_game:active {
     font-size:36px;
     text-align: center;
     text-decoration:none;
-    background-color: #26d20d;
+    background-color: #87B027;
     position:relative;
     padding:20px 40px;
     cursor: pointer;
@@ -315,6 +332,7 @@ nav #finish_game:active {
 .game_over_score .score_block {
     margin-top: 30px;
     width: 400px;
+    margin-left: 5%;
 }
 
 #game_over_h {
@@ -329,17 +347,29 @@ nav #finish_game:active {
 #menu_button {
     width: 30px;
     height: 30px;
-    border: 2px solid black;
+    text-align: center;
+    font-size: 2em;
     position: fixed;
     z-index: 1;
     right: 1rem;
     cursor: pointer;
+    padding: 3px;
+    border-radius: 5px;
+    line-height: 30px;
+    transition: 500ms;
+}
+
+.fa-times:hover {
+    background-color: #2b2c36;
+}
+
+.fa-bars:hover {
+    background-color: #adc79c;
 }
 
 .handle_buttons {
     display: flex;
     flex-direction: column;
-    width: 70%;
     margin: 50px 0 0 20px;
 }
 
@@ -348,6 +378,7 @@ nav #finish_game:active {
     height: 35px;
     color: white;
     cursor: pointer;
+    font-size: 1.2em;
 }
 
 .handle_buttons > a:hover {
@@ -387,6 +418,7 @@ nav #finish_game:active {
 
 canvas {
     width: 490px;
+    border: 2px solid black;
 }
 
 #logout_button {
@@ -394,22 +426,21 @@ canvas {
     float: right;
     margin: 1.4%;
     color: white;
-    height: 17px;
-    padding: 15px;
-    text-align: left;
+    padding: 10px;
     border-radius: 12px;
     cursor: pointer;
+    font-size: 1.5em;
 }
 
 #logout_button:hover {
-    background-color: #61657a;
+    background-color: #2f6c21;
 }
 
 .form {
     display: flex;
-    background-color: #474a59;
+    background-color: #1A2805EA;
     box-shadow: 0 0 40px 16px rgba(0, 0, 0, 0.22);
-    color: #f1f1f2;
+    color: white;
     position: relative;
     width: 320px;
     height: 330px;
@@ -467,7 +498,7 @@ input {
 }
 
 .submit {
-    background-color: #595e70;
+    background-color: rgba(80, 103, 42, 0.92);
     color: white;
     transition: color 300ms;
     cursor: pointer;
