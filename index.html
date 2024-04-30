@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
     <link rel="stylesheet" href="snake.css">
+    <link rel="stylesheet" href="media.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>The snake</title>
 </head>
@@ -22,6 +24,12 @@
         </nav>
         <section class="game_block">
             <div class="game">
+                <audio controls id="eating_sound">
+                    <source src="sounds/eating.mp3">
+                </audio>
+                <audio controls id="game_over_sound">
+                    <source src="sounds/game_over.wav">
+                </audio>
                 <img id="food_icon" src="images/food_icon.png" alt="food_icon"/>
                 <div class="score">
                     <div class="score_block">

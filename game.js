@@ -306,6 +306,8 @@ class Game {
     eatFood() {
         for (let i = 0; i < this.food.length; i++) {
             if ((this.snake.body[0].x === this.food[i].x) && (this.snake.body[0].y === this.food[i].y)) {
+                const sound = document.getElementById("eating_sound");
+                sound.play();
                 this.snake.grow();
                 this.food.splice(i, 1);
                 this.displayScore(this.snake.body.length - 1);
@@ -368,6 +370,8 @@ class Game {
             this.hidePauseGameButton();
             this.hideContinueGameButton();
             this.showGameOver("Game over");
+            const sound = document.getElementById("game_over_sound");
+            sound.play();
         }
     }
 
