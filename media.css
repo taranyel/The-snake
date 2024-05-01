@@ -1,0 +1,58 @@
+@media (max-width: 800px) {
+
+    header {
+        height: 10%;
+    }
+
+    .container {
+        flex-direction: column-reverse;
+    }
+
+    nav {
+        flex-direction: row;
+        width: 100%;
+        margin-top: unset;
+    }
+
+    nav > * {
+        flex: 1;
+        margin-right: 12%;
+        margin-left: 10%;
+        margin-bottom: 50px;
+    }
+
+    .game_block {
+        flex: 1;
+    }
+
+    .game {
+        align-self: center;
+        margin-left: unset;
+        align-items: center;
+    }
+
+    .menu {
+        width: 50%;
+        height: 60%;
+    }
+
+    .forms {
+        margin-left: unset;
+        flex: 1;
+        align-items: center;
+    }
+
+    .start {
+        flex: unset;
+        margin-bottom: 60%;
+        width: 60%;
+    }
+
+    .start::after {
+        background-color: transparent;
+    }
+
+    .start #new_game {
+        margin: unset;
+    }
+}

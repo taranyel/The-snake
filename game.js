@@ -370,6 +370,7 @@ class Game {
             this.hidePauseGameButton();
             this.hideContinueGameButton();
             this.showGameOver("Game over");
+
             const sound = document.getElementById("game_over_sound");
             sound.play();
         }

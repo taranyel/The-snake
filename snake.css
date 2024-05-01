@@ -208,7 +208,7 @@ audio {
 
 .menu {
     display: flex;
-    background-color: #474a59;
+    background-color: rgba(13, 17, 2, 0.92);
     width: 20%;
     height: 80%;
     flex-direction: column;
@@ -363,7 +363,7 @@ audio {
 }
 
 .fa-times:hover {
-    background-color: #2b2c36;
+    background-color: rgba(54, 84, 11, 0.92);
 }
 
 .fa-bars:hover {
@@ -502,7 +502,7 @@ input {
 
 .submit {
     background-color: rgba(80, 103, 42, 0.92);
-    color: white;
+    color: #a2a0a0;
     transition: color 300ms;
     cursor: pointer;
     width: 94%;
@@ -510,6 +510,10 @@ input {
     margin-top: 24px;
     height: 46px;
     border-radius: 20px;
+}
+
+.submit:focus {
+    color: white;
 }
 
 #bad_password, #bad_username {
@@ -551,13 +555,21 @@ label {
     flex: 1;
 }
 
-svg {
+#login_svg {
     position: absolute;
     width: 320px;
     height: 100%;
 }
 
-path {
+#logo_path {
+    stroke: url(#linearGradient);
+    stroke-width: 6px;
+    transition: 3s;
+    stroke-dasharray: 327 500;
+    fill: none;
+}
+
+#login_path {
     fill: none;
     stroke: url(#linearGradient);
     stroke-width: 4;
