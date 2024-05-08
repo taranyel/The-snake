@@ -1,9 +1,15 @@
+/**
+ * @description
+ */
 class Canvas {
-    canvas = document.getElementById("canvas");
+    canvas = document.querySelector("canvas");
     context = this.canvas.getContext("2d")
     cell_size = 35;
     cell_amount = 14;
 
+    /**
+     * @description
+     */
     drawGrid() {
         for (let x = 0; x < this.canvas.height; x += this.cell_size) {
             for (let y = 0; y < this.canvas.width; y += this.cell_size) {
@@ -13,6 +19,12 @@ class Canvas {
         }
     }
 
+    /**
+     * @description
+     * @param x
+     * @param y
+     * @returns {string}
+     */
     getColor(x, y) {
         let color;
         if ((y % 2) === 0) {
@@ -32,41 +44,72 @@ class Canvas {
     }
 }
 
-
+/**
+ *
+ */
 class Coordinates {
     x;
     y;
 
+    /**
+     *
+     * @param x
+     * @param y
+     */
     constructor(x, y) {
         this.x = x;
         this.y = y;
     }
 }
 
+/**
+ *
+ */
 class Direction extends Coordinates {
     name;
 
+    /**
+     *
+     * @param x
+     * @param y
+     * @param name
+     */
     constructor(x, y, name) {
         super(x, y);
         this.name = name;
     }
 }
 
+/**
+ *
+ */
 class Snake {
     body = [];
     direction;
     minimal_move = canvas.cell_size;
 
+    /**
+     *
+     */
     constructor() {
         this.direction = new Direction(this.minimal_move, 0, "right");
         this.body.push(new Coordinates(0, canvas.cell_size));
     }
 
+    /**
+     *
+     */
     createSnake() {
         canvas.context.fillStyle = "#041530";
         canvas.context.fillRect(0, this.minimal_move, canvas.cell_size, canvas.cell_size);
     }
 
+    /**
+     *
+     * @param current_coordinate
+     * @param direction
+     * @returns {number[]|*[]}
+     */
     checkBorder(current_coordinate, direction) {
         if ((current_coordinate === canvas.cell_size * (canvas.cell_amount - 1)) && (direction === this.minimal_move)) {
             return [0, 0];
@@ -76,6 +119,9 @@ class Snake {
         return [current_coordinate, direction];
     }
 
+    /**
+     *
+     */
     grow() {
         let new_x = 0;
         let new_y = 0;
@@ -103,12 +149,22 @@ class Snake {
     }
 }
 
+/**
+ *
+ */
 class Food extends Coordinates {
+
+    /**
+     *
+     */
     constructor() {
         super(0, 0);
     }
 }
 
+/**
+ *
+ */
 class Game {
     snake_id;
     food_id;
@@ -123,6 +179,10 @@ class Game {
     game_block;
     nav;
 
+
+    /**
+     *
+     */
     constructor() {
         document.body.addEventListener('keydown', this);
         this.score = document.getElementById("score");
@@ -139,12 +199,20 @@ class Game {
         }
     }
 
+    /**
+     *
+     * @param e
+     */
     handleEvent(e) {
         if (e.type === "keydown") {
             this.keydown(e);
         }
     }
 
+    /**
+     *
+     * @param e
+     */
     keydown(e) {
         const key = e.code;
         switch (key) {
@@ -174,6 +242,9 @@ class Game {
         }
     }
 
+    /**
+     *
+     */
     init() {
         this.snake = new Snake();
         this.snake_id = 0;
@@ -192,6 +263,9 @@ class Game {
         this.displayScore(0);
     }
 
+    /**
+     *
+     */
     controlSpeed() {
         this.timer_end = Date.now();
 
@@ -205,6 +279,9 @@ class Game {
         }
     }
 
+    /**
+     *
+     */
     startGame() {
         this.clearCanvas();
         this.clearIntervals();
@@ -222,6 +299,9 @@ class Game {
         this.food_id = setInterval(this.generateFood.bind(this), 4000);
     }
 
+    /**
+     *
+     */
     pauseGame() {
         this.showFinishGameButton();
         this.showContinueGameButton();
@@ -231,6 +311,9 @@ class Game {
         document.body.removeEventListener('keydown', this);
     }
 
+    /**
+     *
+     */
     finishGame() {
         this.hideFinishGameButton();
         this.hidePauseGameButton();
@@ -238,9 +321,12 @@ class Game {
         this.showNewGameButton();
         this.clearIntervals();
         this.setRecord();
-        this.showGameOver("Game ended");
+        this.showEndGameScreen("The end");
     }
 
+    /**
+     *
+     */
     continueGame() {
         this.showFinishGameButton();
         this.hideContinueGameButton();
@@ -251,12 +337,24 @@ class Game {
         this.food_id = setInterval(this.generateFood.bind(this), 4000);
     }
 
+    /**
+     *
+     *
+     */
     generateFood() {
         const food = new Food();
         this.drawFood(food);
         this.food.push(food);
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     * @param array
+     * @param start
+     * @returns {boolean}
+     */
     isIn(x, y, array, start) {
         for (let i = start; i < array.length; i++) {
             if ((array[i].x === x) && (array[i].y === y)) {
@@ -266,6 +364,10 @@ class Game {
         return false;
     }
 
+    /**
+     *
+     * @param food
+     */
     drawFood(food) {
         let i = this.getRandomInt() * canvas.cell_size;
         let j = this.getRandomInt() * canvas.cell_size;
@@ -286,23 +388,42 @@ class Game {
         //setTimeout(this.removeFood.bind(this, food), 4000);
     }
 
+    /**
+     *
+     * @returns {number}
+     */
     getRandomInt() {
         return Math.floor(Math.random() * canvas.cell_amount);
     }
 
+    /**
+     *
+     * @param food
+     */
     removeFood(food) {
         canvas.context.clearRect(food.x, food.y, canvas.cell_size, canvas.cell_size);
         canvas.context.strokeRect(food.x, food.y, canvas.cell_size, canvas.cell_size);
     }
 
+    /**
+     *
+     * @param score
+     */
     displayScore(score) {
         this.score.textContent = score;
     }
 
+    /**
+     *
+     * @param record
+     */
     displayRecord(record) {
         this.record.textContent = record;
     }
 
+    /**
+     *
+     */
     eatFood() {
         for (let i = 0; i < this.food.length; i++) {
             if ((this.snake.body[0].x === this.food[i].x) && (this.snake.body[0].y === this.food[i].y)) {
@@ -316,6 +437,9 @@ class Game {
         }
     }
 
+    /**
+     *
+     */
     clearCanvas() {
         for (let i = 0; i < this.snake.body.length; i++) {
             canvas.context.clearRect(this.snake.body[i].x, this.snake.body[i].y, canvas.cell_size, canvas.cell_size);
@@ -330,10 +454,17 @@ class Game {
         }
     }
 
+    /**
+     *
+     * @returns {string}
+     */
     getUser() {
         return sessionStorage.getItem("logged_in");
     }
 
+    /**
+     *
+     */
     setRecord() {
         const current_score = this.snake.body.length - 1;
         const user = JSON.parse(localStorage[this.getUser()]);
@@ -346,12 +477,19 @@ class Game {
         this.displayRecord(JSON.parse(localStorage[user.username]).record);
     }
 
+    /**
+     *
+     */
     clearIntervals() {
         clearInterval(this.snake_id);
         clearInterval(this.food_id);
     }
 
-    showGameOver(message) {
+    /**
+     *
+     * @param message
+     */
+    showEndGameScreen(message) {
         this.score_block.classList.add("game_over_score");
         const game_over_h = document.createElement("h1");
         game_over_h.textContent = message;
@@ -361,6 +499,9 @@ class Game {
         this.game_block.classList.add("game_over")
     }
 
+    /**
+     *
+     */
     isGameOver() {
         if (this.isIn(this.snake.body[0].x, this.snake.body[0].y, this.snake.body, 1)) {
             this.clearIntervals();
@@ -369,13 +510,34 @@ class Game {
             this.hideFinishGameButton();
             this.hidePauseGameButton();
             this.hideContinueGameButton();
-            this.showGameOver("Game over");
+            this.showEndGameScreen("Game over");
 
             const sound = document.getElementById("game_over_sound");
             sound.play();
         }
     }
 
+    /**
+     *
+     */
+    isVictory() {
+        if (this.snake.body.length === canvas.cell_size * canvas.cell_size) {
+            this.clearIntervals();
+            this.setRecord();
+            this.showNewGameButton();
+            this.hideFinishGameButton();
+            this.hidePauseGameButton();
+            this.hideContinueGameButton();
+            this.showEndGameScreen("Victory!!!");
+
+            const sound = document.getElementById("victory_sound");
+            sound.play();
+        }
+    }
+
+    /**
+     *
+     */
     moveSnake() {
         let head = new Coordinates(this.snake.body[0].x, this.snake.body[0].y);
 
@@ -393,6 +555,7 @@ class Game {
         this.controlSpeed();
         this.eatFood();
         this.isGameOver();
+        this.isVictory();
 
         canvas.context.fillStyle = "#041530";
         canvas.context.fillRect(this.snake.body[0].x, this.snake.body[0].y, canvas.cell_size, canvas.cell_size);
@@ -413,34 +576,58 @@ class Game {
         //canvas.context.strokeRect(head.x, head.y, canvas.cell_size, canvas.cell_size);
     }
 
+    /**
+     *
+     */
     showNewGameButton() {
         new_game.style.display = "block";
     }
 
+    /**
+     *
+     */
     showPauseGameButton() {
         pause_game.style.display = "block";
     }
 
+    /**
+     *
+     */
     showFinishGameButton() {
         finish_game.style.display = "block";
     }
 
+    /**
+     *
+     */
     showContinueGameButton() {
         continue_game.style.display = "block";
     }
 
+    /**
+     *
+     */
     hideNewGameButton() {
         new_game.style.display = "none";
     }
 
+    /**
+     *
+     */
     hidePauseGameButton() {
         pause_game.style.display = "none";
     }
 
+    /**
+     *
+     */
     hideFinishGameButton() {
         finish_game.style.display = "none";
     }
 
+    /**
+     *
+     */
     hideContinueGameButton() {
         continue_game.style.display = "none";
     }

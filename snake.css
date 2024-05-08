@@ -50,7 +50,7 @@ nav {
     font-size: 2em;
 }
 
-.record_score {
+.score_block div:last-child {
     flex-direction: row-reverse;
 }
 
@@ -175,10 +175,6 @@ nav #finish_game:active {
     align-self: center;
 }
 
-.record_score img{
-    margin-left: 150px;
-}
-
 .game_block {
     display: none;
     flex-direction: row;
@@ -198,7 +194,6 @@ audio {
 }
 
 .menu_block {
-    //width: 30%;
     margin-top: 40px;
 }
 
@@ -238,23 +233,28 @@ audio {
 }
 
 .game_over {
-    background-color: rgb(41, 54, 8);
     width: 45%;
-    height: 95%;
+    height: 90%;
 }
 
 .game_over .game {
+    margin: unset;
+}
+
+.game_over canvas {
+    height: 90%;
 }
 
 .game_over_score {
     position: fixed;
-    height: 80%;
     background-color: rgb(41, 54, 8, 90%);
     display: flex;
+    height: 80%;
     flex-direction: column;
     z-index: 2;
     color: white;
-    width: 35%;
+    width: 45%;
+    align-items: center;
 }
 
 .game_over_score > * {
@@ -274,7 +274,6 @@ audio {
     box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
     transform: scale(1);
     animation: pulse 2s infinite;
-    margin-left: 15%;
 }
 
 @keyframes pulse {
@@ -335,7 +334,6 @@ audio {
 .game_over_score .score_block {
     margin-top: 30px;
     width: 400px;
-    margin-left: 5%;
 }
 
 #game_over_h {
@@ -344,7 +342,6 @@ audio {
     order: 0;
     text-shadow: 7px 7px black;
     -webkit-text-stroke: 2px black;
-    //text-shadow: 1px 1px 2px red, 0 0 1em blue, 0 0 0.2em blue;
 }
 
 #menu_button {
@@ -382,17 +379,49 @@ audio {
     height: 35px;
     color: white;
     cursor: pointer;
+    text-decoration: none;
 }
 
 .handle_buttons > a:hover {
     text-decoration: underline;
 }
 
-.change_form {
-    flex-direction: column;
-    background-color: #24272d;
-    margin-bottom: 25px;
+.clicker {
+    display: inline-block;
+}
+
+.clicker.hidden {
+    display: none;
+}
+
+.hidden_form {
+    height: 0;
+    padding: unset;
+    margin-bottom: unset;
+    overflow: hidden;
+    transition: 500ms;
+}
+
+#show_form1:target ~ .handle_buttons a[href="#show_form1"],
+#show_form2:target ~ .handle_buttons a[href="#show_form2"]
+{
+    display: none;
+}
+
+#show_form1:target ~ .handle_buttons a[href="#hide_form1"],
+#show_form2:target ~ .handle_buttons a[href="#hide_form2"]
+{
+    display: inline-block;
+}
+
+#show_form1:target ~ .handle_buttons .hidden_form.nr1,
+#show_form2:target ~ .handle_buttons .hidden_form.nr2
+{
+    height: 90px;
     padding: 10px;
+    flex-direction: column;
+    background-color: rgba(54, 84, 11, 0.92);
+    margin-bottom: 15px;
     transition: 700ms;
 }
 
@@ -420,8 +449,11 @@ audio {
 }
 
 canvas {
-    width: 490px;
     border: 2px solid black;
+}
+
+#login_h2 {
+    display: none;
 }
 
 #logout_button {
@@ -533,8 +565,6 @@ input {
     display: flex;
     flex-direction: column;
     flex: 1;
-    /*place-content: center;*/
-    /*width: 100%;*/
 }
 
 .forms {
@@ -557,12 +587,12 @@ label {
 
 #login_svg {
     position: absolute;
-    width: 320px;
+    width: 100%;
     height: 100%;
 }
 
 #logo_path {
-    stroke: url(#linearGradient);
+    stroke: url(#logo_gradient);
     stroke-width: 6px;
     transition: 3s;
     stroke-dasharray: 327 500;
@@ -571,7 +601,7 @@ label {
 
 #login_path {
     fill: none;
-    stroke: url(#linearGradient);
+    stroke: url(#login_gradient);
     stroke-width: 4;
     stroke-dasharray: 240 1386;
     transition: 700ms;
