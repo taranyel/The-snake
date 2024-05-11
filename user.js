@@ -83,10 +83,24 @@ class Storage {
 
     /**
      *
+     * @param str
+     * @returns {*}
+     */
+    escapeSpecialChars(str) {
+        return str
+            .replace(/&/g, "&")
+            .replace(/</g, "<")
+            .replace(/>/g, ">")
+            .replace(/"/g, "\"")
+            .replace(/'/g, "'");
+    }
+
+    /**
+     *
      */
     login() {
-        const username_value = username.value;
-        const password_value = password.value;
+        const username_value = this.escapeSpecialChars(username.value);
+        const password_value = this.escapeSpecialChars(password.value);
         
         const storage_user = localStorage.getItem(username_value);
         if (!storage_user) {
@@ -113,8 +127,8 @@ class Storage {
             if (localStorage.getItem(username.value)) {
                 handleEvents.fillError(bad_username, "Account is already exists!");
             } else {
-                this.user.username = username.value;
-                this.user.password = password.value;
+                this.user.username = this.escapeSpecialChars(username.value);
+                this.user.password = this.escapeSpecialChars(password.value);
 
                 localStorage.setItem(this.user.username, JSON.stringify(this.user.createUser()));
 
