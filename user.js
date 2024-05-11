@@ -374,7 +374,7 @@ class HandleEvents {
         username_show.textContent = sessionStorage.getItem("logged_in");
     }
 
-    showImage() {console.log(localStorage)
+    showImage() {
         const image = document.querySelector(".user_data img");
         const user = storage.getLoggedInUser();
 
