@@ -1,6 +1,7 @@
 /**
  *
  */
+
 class User {
     username;
     password;
@@ -17,13 +18,14 @@ class User {
 
     /**
      *
-     * @returns {{password, record, username}}
+     * @returns {{password, record, username, image}}
      */
     createUser() {
         return {
             "username": this.username,
             "password": this.password,
-            "record": this.record
+            "record": this.record,
+            "image": this.image
         };
     }
 }
@@ -101,11 +103,10 @@ class Storage {
     login() {
         const username_value = this.escapeSpecialChars(username.value);
         const password_value = this.escapeSpecialChars(password.value);
-        
+
         const storage_user = localStorage.getItem(username_value);
         if (!storage_user) {
             handleEvents.fillError(bad_username, "Wrong username!");
-
         } else {
             const storage_user_json = JSON.parse(storage_user);
             if (password_value !== storage_user_json.password) {
@@ -153,7 +154,9 @@ class Storage {
      */
     deleteAccount() {
         if (window.confirm("Do you really want to delete your account?")) {
-            localStorage.removeItem(sessionStorage.getItem("logged_in"));
+            const user = this.getLoggedInUser();
+            localStorage.removeItem(user.username);
+            localStorage.removeItem(user.username + "_image");
             this.logOut();
         }
     }
@@ -173,11 +176,40 @@ class Storage {
 
     /**
      *
+     */
+    changeImage() {
+        if (validateNewImage()) {
+            const user = this.getLoggedInUser();
+            const file = new_image.files[0];
+
+            localStorage.removeItem(user.username);
+            localStorage.setItem(user.username, JSON.stringify(user));
+
+            const reader = new FileReader();
+
+            reader.onload = function() {
+                if (reader.result.length > 3145728) {
+                    bad_new_image.textContent = "Max. image size is 3MB";
+                } else {
+                    localStorage.setItem(user.username + "_image", reader.result);
+                }
+            }
+            reader.readAsDataURL(file);
+            location.reload();
+        }
+    }
+
+    /**
+     *
      * @returns {any}
      */
     getLoggedInUser() {
         const username = sessionStorage.getItem("logged_in");
-        return JSON.parse(localStorage[username])
+
+        if (username) {
+            return JSON.parse(localStorage[username])
+        }
+        return null;
     }
 
     /**
@@ -185,12 +217,20 @@ class Storage {
      */
     changeUsername() {
         if (validateNewUsername()) {
-            if (!localStorage.getItem(username.value)) {
+            if (!localStorage.getItem(new_username.value)) {
                 const user = this.getLoggedInUser();
+
                 const old_username = user.username;
+                const image = localStorage[old_username + "_image"];
+
                 user.username = new_username.value;
+
                 localStorage.removeItem(old_username);
+                localStorage.removeItem(old_username + "_image")
+
                 localStorage.setItem(user.username, JSON.stringify(user));
+                localStorage.setItem(user.username + "_image", image);
+
                 sessionStorage["logged_in"] = new_username.value;
                 location.reload();
             } else {
@@ -223,16 +263,23 @@ class HandleEvents {
         this.menu_button = document.getElementById("menu_button");
         const submit_new_username = document.getElementById("submit_new_username");
         const submit_new_password = document.getElementById("submit_new_password");
+        const submit_new_image = document.getElementById("submit_new_image");
+
         this.delete_account = document.getElementById("delete_account");
 
         log_in.addEventListener("click", storage.waitForLogin.bind(storage));
         sign_up.addEventListener("click", storage.waitForSignUp.bind(storage));
         this.logout.addEventListener("click", storage.logOut.bind(storage));
         this.menu_button.addEventListener("click", this.toggleMenu.bind(this));
+
         submit_new_username.addEventListener("click", storage.changeUsername.bind(storage));
         submit_new_password.addEventListener("click", storage.changePassword.bind(storage));
+        submit_new_image.addEventListener("click", storage.changeImage.bind(storage));
+
         this.delete_account.addEventListener("click", storage.deleteAccount.bind(storage));
+
         this.showUsername();
+        this.showImage();
     }
 
     /**
@@ -260,6 +307,7 @@ class HandleEvents {
         this.game_screen.style.display = "flex";
         this.logout.style.display = "flex";
         handleEvents.showUsername();
+        handleEvents.showImage();
     }
 
     /**
@@ -279,8 +327,10 @@ class HandleEvents {
         bad_username.textContent = "";
         bad_new_username.textContent = "";
         bad_new_password.textContent = "";
+        bad_new_image.textContent = "";
         username.value = "";
         password.value = "";
+        new_image.value = "";
         new_username.value = "";
         new_password.value = "";
     }
@@ -312,6 +362,7 @@ class HandleEvents {
         } else {
             menu.classList.add("opened");
             this.menu_button.className = "fa fa-times";
+            this.clearErrorsAndInputs();
         }
     }
 
@@ -321,6 +372,20 @@ class HandleEvents {
     showUsername() {
         const username_show = document.querySelector(".user_name");
         username_show.textContent = sessionStorage.getItem("logged_in");
+    }
+
+    showImage() {console.log(localStorage)
+        const image = document.querySelector(".user_data img");
+        const user = storage.getLoggedInUser();
+
+        if (user) {
+            const user_image = localStorage.getItem(user.username + "_image");
+            if (user_image) {
+                image.src = user_image;
+            } else {
+                image.src = "images/default_icon.png";
+            }
+        }
     }
 }
 

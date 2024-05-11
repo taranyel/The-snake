@@ -370,7 +370,7 @@ audio {
 .handle_buttons {
     display: flex;
     flex-direction: column;
-    margin: 50px 0 0 20px;
+    margin:10px 0 0 20px;
     width: 70%;
 }
 
@@ -394,6 +394,18 @@ audio {
     display: none;
 }
 
+input {
+    background-color: transparent;
+    border: 0;
+    color: #f2f2f2;
+    font-size: 20px;
+    height: 30px;
+    line-height: 30px;
+    outline: none !important;
+    width: 98%;
+    border-bottom: 2px solid black;
+}
+
 .hidden_form {
     height: 0;
     padding: unset;
@@ -402,25 +414,42 @@ audio {
     transition: 500ms;
 }
 
+.hidden_form p {
+    content: "";
+}
+
+a[href="#show_form1"] {
+    margin-top: 40px;
+}
+
 #show_form1:target ~ .handle_buttons a[href="#show_form1"],
-#show_form2:target ~ .handle_buttons a[href="#show_form2"]
+#show_form2:target ~ .handle_buttons a[href="#show_form2"],
+#show_form3:target ~ .handle_buttons a[href="#show_form3"]
 {
     display: none;
 }
 
 #show_form1:target ~ .handle_buttons a[href="#hide_form1"],
-#show_form2:target ~ .handle_buttons a[href="#hide_form2"]
+#show_form2:target ~ .handle_buttons a[href="#hide_form2"],
+#show_form3:target ~ .handle_buttons a[href="#hide_form3"]
 {
     display: inline-block;
 }
 
+.hidden_form.nr3 input {
+    font-size: unset;
+    height: 50px;
+    line-height: 50px;
+}
+
 #show_form1:target ~ .handle_buttons .hidden_form.nr1,
-#show_form2:target ~ .handle_buttons .hidden_form.nr2
+#show_form2:target ~ .handle_buttons .hidden_form.nr2,
+#show_form3:target ~ .handle_buttons .hidden_form.nr3
 {
     height: 90px;
     padding: 10px;
     flex-direction: column;
-    background-color: rgba(54, 84, 11, 0.92);
+    background-color: rgba(87, 105, 70, 0.92);
     margin-bottom: 15px;
     transition: 700ms;
 }
@@ -520,17 +549,7 @@ canvas {
     flex-direction: column;
 }
 
-input {
-    background-color: transparent;
-    border: 0;
-    color: #f2f2f2;
-    font-size: 20px;
-    height: 30px;
-    line-height: 30px;
-    outline: none !important;
-    width: 98%;
-    border-bottom: 2px solid black;
-}
+
 
 .submit {
     background-color: rgba(80, 103, 42, 0.92);
@@ -548,13 +567,13 @@ input {
     color: white;
 }
 
-#bad_password, #bad_username {
+#login_form p {
     margin: unset;
     height: 10px;
     font-size: 0.7em;
 }
 
-#bad_new_password, #bad_new_username {
+.change_form p {
     color: #c2c2c5;
     margin: unset;
     height: 15px;
@@ -597,6 +616,14 @@ label {
     transition: 3s;
     stroke-dasharray: 327 500;
     fill: none;
+}
+
+#logo_color1 {
+    stop-color:#fff700;
+}
+
+#logo_color2 {
+    stop-color:#2caf00;
 }
 
 #login_path {

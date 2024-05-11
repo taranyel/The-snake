@@ -2,11 +2,14 @@ const username = document.getElementById("username");
 const password = document.getElementById("password");
 const new_username = document.getElementById("change_username_field");
 const new_password = document.getElementById("change_password_field");
+const new_image = document.getElementById("change_image_field");
 const submit = document.getElementById("submit");
+
 const bad_username = document.getElementById("bad_username");
 const bad_password = document.getElementById("bad_password");
 const bad_new_username = document.getElementById("bad_new_username");
 const bad_new_password = document.getElementById("bad_new_password");
+const bad_new_image = document.getElementById("bad_new_image");
 
 /**
  *
@@ -65,6 +68,21 @@ function validateNewUsername() {
  */
 function validateNewPassword() {
     return validatePassword(new_password.value, bad_new_password);
+}
+
+function validateNewImage() {
+    if (new_image.files.length === 0) {
+        bad_new_image.textContent = "Please upload new image";
+        return false;
+    }
+
+    const new_file = new_image.files[0];
+    if (new_file.type.substring(0, 5) !== "image") {
+        bad_new_image.textContent = "File must be an image!";
+        return false;
+    }
+
+    return true;
 }
 
 /**

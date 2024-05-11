@@ -53,13 +53,24 @@
                 <i class="fa fa-bars" id="menu_button"></i>
                 <div class="menu">
                     <div class="user_data">
-                        <img src="images/default_icon.png" alt="icon">
+                        <img src="" alt="icon">
                         <h2 class="user_name">Username</h2>
                     </div>
 
                     <div id="show_form1"></div>
                     <div id="show_form2"></div>
+                    <div id="show_form3"></div>
+
                     <div class="handle_buttons">
+
+                        <a href="#show_form3" class="clicker">Update image</a>
+                        <a href="#hide_form3" class="clicker hidden">Update image</a>
+
+                        <form class="change_form hidden_form nr3">
+                            <input type="file" name="new_image" id="change_image_field" accept="image/*">
+                            <p id="bad_new_image"></p>
+                            <button type="button" id="submit_new_image">Submit</button>
+                        </form>
 
                         <a href="#show_form1"  class="clicker">Change username</a>
                         <a href="#hide_form1"  class="clicker hidden">Change username</a>
