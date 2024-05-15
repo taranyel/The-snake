@@ -11,11 +11,27 @@ const bad_new_username = document.getElementById("bad_new_username");
 const bad_new_password = document.getElementById("bad_new_password");
 const bad_new_image = document.getElementById("bad_new_image");
 
+
 /**
  *
- * @param username
+ * @param str
+ * @returns {*}
+ */
+function escapeSpecialChars(str) {
+    return str
+        .replace(/&/g, "&")
+        .replace(/</g, "<")
+        .replace(/>/g, ">")
+        .replace(/"/g, "\"")
+        .replace(/'/g, "'");
+}
+
+/**
+ * Function is used for username validation.
+ *
+ * @param username - given username from user
  * @param bad_username
- * @returns {boolean}
+ * @returns {String}
  */
 function validateUsername(username, bad_username) {
     if (!username) {
@@ -26,17 +42,17 @@ function validateUsername(username, bad_username) {
         } else if (username.length > 10) {
             bad_username.textContent = "Maximum 10 characters are allowed!"
         } else {
-            return true;
+            return username.value;
         }
     }
-    return false;
+    return null;
 }
 
 /**
  *
  * @param password
  * @param bad_password
- * @returns {boolean}
+ * @returns {String}
  */
 function validatePassword(password, bad_password) {
     if (!password) {
@@ -47,27 +63,27 @@ function validatePassword(password, bad_password) {
         } else if (password.length > 15) {
             bad_password.textContent = "Maximum 15 characters are allowed!"
         } else {
-            return true;
+            return password.value;
         }
     }
-    return false;
+    return null;
 }
 
 /**
  *
  *
- * @returns {boolean}
+ * @returns {String}
  */
 function validateNewUsername() {
-    return validateUsername(new_username.value, bad_new_username);
+    return validateUsername(escapeSpecialChars(new_username.value), bad_new_username);
 }
 
 /**
  *
- * @returns {boolean}
+ * @returns {String}
  */
 function validateNewPassword() {
-    return validatePassword(new_password.value, bad_new_password);
+    return validatePassword(escapeSpecialChars(new_password.value), bad_new_password);
 }
 
 function validateNewImage() {
@@ -87,8 +103,8 @@ function validateNewImage() {
 
 /**
  *
- * @returns {boolean}
+ * @returns {String[]}
  */
 function loginValidation() {
-    return validateUsername(username.value, bad_username) && validatePassword(password.value, bad_password);
+    return [validateUsername(escapeSpecialChars(username.value), bad_username),validatePassword(escapeSpecialChars(password.value), bad_password)];
 }

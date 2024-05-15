@@ -85,24 +85,10 @@ class Storage {
 
     /**
      *
-     * @param str
-     * @returns {*}
-     */
-    escapeSpecialChars(str) {
-        return str
-            .replace(/&/g, "&")
-            .replace(/</g, "<")
-            .replace(/>/g, ">")
-            .replace(/"/g, "\"")
-            .replace(/'/g, "'");
-    }
-
-    /**
-     *
      */
     login() {
-        const username_value = this.escapeSpecialChars(username.value);
-        const password_value = this.escapeSpecialChars(password.value);
+        const username_value = escapeSpecialChars(username.value);
+        const password_value = escapeSpecialChars(password.value);
 
         const storage_user = localStorage.getItem(username_value);
         if (!storage_user) {
@@ -124,12 +110,13 @@ class Storage {
      *
      */
     signUp() {
-        if (loginValidation()) {
-            if (localStorage.getItem(username.value)) {
+        const validUserData = loginValidation();
+        if (validUserData[0] && validUserData[1]) {
+            if (localStorage.getItem(validUserData[0])) {
                 handleEvents.fillError(bad_username, "Account is already exists!");
             } else {
-                this.user.username = this.escapeSpecialChars(username.value);
-                this.user.password = this.escapeSpecialChars(password.value);
+                this.user.username = validUserData[0];
+                this.user.password = validUserData[1];
 
                 localStorage.setItem(this.user.username, JSON.stringify(this.user.createUser()));
 
@@ -165,9 +152,10 @@ class Storage {
      *
      */
     changePassword() {
-        if (validateNewPassword()) {
+        const validNewPassword = validateNewPassword();
+        if (validNewPassword) {
             const user = this.getLoggedInUser();
-            user.password = new_password.value;
+            user.password = validNewPassword;
             localStorage.removeItem(user.username);
             localStorage.setItem(user.username, JSON.stringify(user));
             window.alert("Password was successfully changed!");
@@ -216,14 +204,15 @@ class Storage {
      *
      */
     changeUsername() {
-        if (validateNewUsername()) {
-            if (!localStorage.getItem(new_username.value)) {
+        const validNewUsername = validateNewUsername();
+        if (validNewUsername) {
+            if (!localStorage.getItem(validNewUsername)) {
                 const user = this.getLoggedInUser();
 
                 const old_username = user.username;
                 const image = localStorage[old_username + "_image"];
 
-                user.username = new_username.value;
+                user.username = validNewUsername;
 
                 localStorage.removeItem(old_username);
                 localStorage.removeItem(old_username + "_image")
@@ -231,7 +220,7 @@ class Storage {
                 localStorage.setItem(user.username, JSON.stringify(user));
                 localStorage.setItem(user.username + "_image", image);
 
-                sessionStorage["logged_in"] = new_username.value;
+                sessionStorage["logged_in"] = validNewUsername;
                 location.reload();
             } else {
                 handleEvents.fillError(bad_new_username, "Account is already exists!");

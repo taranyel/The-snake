@@ -28,6 +28,14 @@
         margin-bottom: 50px;
     }
 
+    canvas {
+        width: 380px;
+    }
+
+    .score_block {
+        width: 380px;
+    }
+
     .game_block {
         flex: 1;
     }
