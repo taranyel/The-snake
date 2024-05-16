@@ -1,5 +1,5 @@
 /**
- * @description
+ * Class represents game board (canvas).
  */
 class Canvas {
     canvas = document.querySelector("canvas");
@@ -7,8 +7,9 @@ class Canvas {
     cell_size = 35;
     cell_amount = 14;
 
+
     /**
-     * @description
+     * Draws grid on the game board.
      */
     drawGrid() {
         for (let x = 0; x < this.canvas.height; x += this.cell_size) {
@@ -19,11 +20,13 @@ class Canvas {
         }
     }
 
+
     /**
-     * @description
-     * @param x
-     * @param y
-     * @returns {string}
+     * Decides with which color will be filled cell on the game board.
+     *
+     * @param x - x coordinate on the game board
+     * @param y - y coordinate on the game board
+     * @returns {String} - returns color in rgb format
      */
     getColor(x, y) {
         let color;
@@ -44,17 +47,19 @@ class Canvas {
     }
 }
 
+
 /**
- *
+ * Class represents coordinates on the game board.
  */
 class Coordinates {
     x;
     y;
 
+
     /**
-     *
-     * @param x
-     * @param y
+     * - Constructor
+     * @param x - x coordinate on the game board
+     * @param y - y coordinate on the game board
      */
     constructor(x, y) {
         this.x = x;
@@ -62,17 +67,20 @@ class Coordinates {
     }
 }
 
+
 /**
- *
+ * Class represents snake direction on the game board, extends Coordinates class.
  */
 class Direction extends Coordinates {
     name;
 
+
     /**
+     * Constructor
      *
-     * @param x
-     * @param y
-     * @param name
+     * @param x - x coordinate on the game board
+     * @param y - y coordinate on the game board
+     * @param name - direction name, can be: <b>right, left, up, down</b>
      */
     constructor(x, y, name) {
         super(x, y);
@@ -80,8 +88,9 @@ class Direction extends Coordinates {
     }
 }
 
+
 /**
- *
+ * Class represents snake on the gme board.
  */
 class Snake {
     body = [];
@@ -89,26 +98,29 @@ class Snake {
     minimal_move = canvas.cell_size;
 
     /**
-     *
+     * Constructor, creates snake and sets <b>right</b> as default snake direction
      */
     constructor() {
         this.direction = new Direction(this.minimal_move, 0, "right");
         this.body.push(new Coordinates(0, canvas.cell_size));
     }
 
+
     /**
-     *
+     * Draws new snake on the game board.
      */
     createSnake() {
         canvas.context.fillStyle = "#041530";
         canvas.context.fillRect(0, this.minimal_move, canvas.cell_size, canvas.cell_size);
     }
 
+
     /**
+     * Checks if snake crosses border of the game board.
      *
-     * @param current_coordinate
-     * @param direction
-     * @returns {number[]|*[]}
+     * @param current_coordinate - current <b>x</b> or <b>y</b> snake coordinate on the game board
+     * @param direction - current snake direction
+     * @returns {number[]|*[]} - returns new snake coordinates
      */
     checkBorder(current_coordinate, direction) {
         if ((current_coordinate === canvas.cell_size * (canvas.cell_amount - 1)) && (direction === this.minimal_move)) {
@@ -119,8 +131,9 @@ class Snake {
         return [current_coordinate, direction];
     }
 
+
     /**
-     *
+     * Increases snake according to its directory.
      */
     grow() {
         let new_x = 0;
@@ -149,21 +162,24 @@ class Snake {
     }
 }
 
+
 /**
- *
+ * Class represents food on the game board, extends Coordinates class.
+ * Every food item has its own coordinates on the game board.
  */
 class Food extends Coordinates {
 
     /**
-     *
+     * Constructor
      */
     constructor() {
         super(0, 0);
     }
 }
 
+
 /**
- *
+ * Class manages game, shows user score and record.
  */
 class Game {
     snake_id;
@@ -181,7 +197,8 @@ class Game {
 
 
     /**
-     *
+     * Constructor, sets <i>keydown</i> event to body, gets html elements from the document,
+     * shows user record if user is logged in
      */
     constructor() {
         document.body.addEventListener('keydown', this);
@@ -199,9 +216,11 @@ class Game {
         }
     }
 
+
     /**
+     * Handles events.
      *
-     * @param e
+     * @param e - event
      */
     handleEvent(e) {
         if (e.type === "keydown") {
@@ -209,9 +228,11 @@ class Game {
         }
     }
 
+
     /**
+     * Manages snake direction according to pressed key.
      *
-     * @param e
+     * @param e - key pressed
      */
     keydown(e) {
         const key = e.code;
@@ -242,8 +263,9 @@ class Game {
         }
     }
 
+
     /**
-     *
+     * Initialise variables for new game, sets timer to the current time.
      */
     init() {
         this.snake = new Snake();
@@ -256,6 +278,7 @@ class Game {
         this.score_block.classList.remove("game_over_score");
         this.game_block.classList.remove("game_over")
         const game_over_h = document.getElementById("game_over_h");
+
         if (game_over_h) {
             this.score_block.removeChild(game_over_h);
             this.score_block.removeChild(new_game);
@@ -263,8 +286,9 @@ class Game {
         this.displayScore(0);
     }
 
+
     /**
-     *
+     * Controls snake speed, increases snake speed every 15 seconds.
      */
     controlSpeed() {
         this.timer_end = Date.now();
@@ -279,8 +303,9 @@ class Game {
         }
     }
 
+
     /**
-     *
+     * Starts new game.
      */
     startGame() {
         this.clearCanvas();
@@ -299,8 +324,9 @@ class Game {
         this.food_id = setInterval(this.generateFood.bind(this), 4000);
     }
 
+
     /**
-     *
+     * Pauses game.
      */
     pauseGame() {
         this.showFinishGameButton();
@@ -311,8 +337,9 @@ class Game {
         document.body.removeEventListener('keydown', this);
     }
 
+
     /**
-     *
+     * Finishes game.
      */
     finishGame() {
         this.hideFinishGameButton();
@@ -324,8 +351,9 @@ class Game {
         this.showEndGameScreen("The end");
     }
 
+
     /**
-     *
+     * Continues game after pause.
      */
     continueGame() {
         this.showFinishGameButton();
@@ -337,9 +365,9 @@ class Game {
         this.food_id = setInterval(this.generateFood.bind(this), 4000);
     }
 
+
     /**
-     *
-     *
+     * Creates new food, adds new food to the food list.
      */
     generateFood() {
         const food = new Food();
@@ -347,13 +375,16 @@ class Game {
         this.food.push(food);
     }
 
+
     /**
+     * Checks if given coordinates are in the given list of coordinates.
      *
-     * @param x
-     * @param y
-     * @param array
-     * @param start
-     * @returns {boolean}
+     * @param x - given x coordinate on the game board
+     * @param y - given x coordinate on the game board
+     * @param array - given list of coordinates
+     * @param start - start index, from which given coordinates will be searched in the given list of coordinates
+     * @returns {boolean} - returns <b>true</b> if given coordinates are in the given list of coordinates,
+     * otherwise returns <b>false</b>
      */
     isIn(x, y, array, start) {
         for (let i = start; i < array.length; i++) {
@@ -364,9 +395,12 @@ class Game {
         return false;
     }
 
+
     /**
+     * Generates random coordinates on the game board, checks if these coordinates are in snake, if not, draws new food
+     * on these coordinates. Sets new coordinates to the food item.
      *
-     * @param food
+     * @param food - given food item
      */
     drawFood(food) {
         let i = this.getRandomInt() * canvas.cell_size;
@@ -382,47 +416,39 @@ class Game {
 
         const image = document.getElementById("food_icon");
         canvas.context.drawImage(image, food.x, food.y, canvas.cell_size, canvas.cell_size);
-        // canvas.canvas_context.fillStyle = "red";
-        // canvas.canvas_context.fillRect(food.x, food.y, canvas.cell_size, canvas.cell_size);
-
-        //setTimeout(this.removeFood.bind(this, food), 4000);
     }
 
+
     /**
-     *
-     * @returns {number}
+     * @returns {number} - returns new random int
      */
     getRandomInt() {
         return Math.floor(Math.random() * canvas.cell_amount);
     }
 
-    /**
-     *
-     * @param food
-     */
-    removeFood(food) {
-        canvas.context.clearRect(food.x, food.y, canvas.cell_size, canvas.cell_size);
-        canvas.context.strokeRect(food.x, food.y, canvas.cell_size, canvas.cell_size);
-    }
 
     /**
+     * Sets score.
      *
-     * @param score
+     * @param score - score html element
      */
     displayScore(score) {
         this.score.textContent = score;
     }
 
     /**
+     * Sets record.
      *
-     * @param record
+     * @param record - record html element
      */
     displayRecord(record) {
         this.record.textContent = record;
     }
 
+
     /**
-     *
+     * Checks if any of generated food items are in the snake body, if yes represents "eating food by snake" -
+     * grows snake body, removes "eaten" food item from list of food items. Also plays eating sound and updates score.
      */
     eatFood() {
         for (let i = 0; i < this.food.length; i++) {
@@ -437,8 +463,9 @@ class Game {
         }
     }
 
+
     /**
-     *
+     * Clears game board for new game.
      */
     clearCanvas() {
         for (let i = 0; i < this.snake.body.length; i++) {
@@ -454,16 +481,19 @@ class Game {
         }
     }
 
+
     /**
+     * Gets currently logged-in user.
      *
-     * @returns {string}
+     * @returns {String} - returns currently logged-in user
      */
     getUser() {
         return sessionStorage.getItem("logged_in");
     }
 
+
     /**
-     *
+     * Sets new record for logged-in user after game.
      */
     setRecord() {
         const current_score = this.snake.body.length - 1;
@@ -477,17 +507,20 @@ class Game {
         this.displayRecord(JSON.parse(localStorage[user.username]).record);
     }
 
+
     /**
-     *
+     * Stops snake.
      */
     clearIntervals() {
         clearInterval(this.snake_id);
         clearInterval(this.food_id);
     }
 
+
     /**
+     * Shows "end game" screen when game is finished.
      *
-     * @param message
+     * @param message - message to show on the screen
      */
     showEndGameScreen(message) {
         this.score_block.classList.add("game_over_score");
@@ -499,8 +532,9 @@ class Game {
         this.game_block.classList.add("game_over")
     }
 
+
     /**
-     *
+     * Checks if game is over, if yes, stops snake, shows "game over" screen and plays game over sound.
      */
     isGameOver() {
         if (this.isIn(this.snake.body[0].x, this.snake.body[0].y, this.snake.body, 1)) {
@@ -517,8 +551,9 @@ class Game {
         }
     }
 
+
     /**
-     *
+     * Checks if user wins the game, if yes, shows victory screen and plays victory sound.
      */
     isVictory() {
         if (this.snake.body.length === canvas.cell_size * canvas.cell_size) {
@@ -535,8 +570,9 @@ class Game {
         }
     }
 
+
     /**
-     *
+     * Moves snake on the game board, checks if game is over or if user wins the game.
      */
     moveSnake() {
         let head = new Coordinates(this.snake.body[0].x, this.snake.body[0].y);
@@ -573,60 +609,60 @@ class Game {
         canvas.context.clearRect(head.x, head.y, canvas.cell_size, canvas.cell_size);
         canvas.context.fillStyle = canvas.getColor(head.x, head.y);
         canvas.context.fillRect(head.x, head.y, canvas.cell_size, canvas.cell_size);
-        //canvas.context.strokeRect(head.x, head.y, canvas.cell_size, canvas.cell_size);
     }
 
+
     /**
-     *
+     * Shows "new game" button.
      */
     showNewGameButton() {
         new_game.style.display = "block";
     }
 
     /**
-     *
+     * Shows "pause game" button.
      */
     showPauseGameButton() {
         pause_game.style.display = "block";
     }
 
     /**
-     *
+     * Shows "finish game" button.
      */
     showFinishGameButton() {
         finish_game.style.display = "block";
     }
 
     /**
-     *
+     * Shows "continue game" button.
      */
     showContinueGameButton() {
         continue_game.style.display = "block";
     }
 
     /**
-     *
+     * Hides "new game" button.
      */
     hideNewGameButton() {
         new_game.style.display = "none";
     }
 
     /**
-     *
+     * Hides "pause game" button.
      */
     hidePauseGameButton() {
         pause_game.style.display = "none";
     }
 
     /**
-     *
+     * Hides "finish game" button.
      */
     hideFinishGameButton() {
         finish_game.style.display = "none";
     }
 
     /**
-     *
+     * Hides "continue game" button.
      */
     hideContinueGameButton() {
         continue_game.style.display = "none";

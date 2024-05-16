@@ -1,5 +1,5 @@
 /**
- *
+ * Creates and shows svg logo.
  */
 (function createLogo(){
     const header = document.querySelector("header");
@@ -53,25 +53,25 @@ const log_in = document.getElementById("login_button");
 const sign_up = document.getElementById("sign_up_button");
 
 /**
- *
+ * Moves svg path if username field is on focus.
  */
-document.getElementById("username").addEventListener('focus', function (e) {
+username.addEventListener('focus', function (e) {
     login_path.style.strokeDashoffset = "0px";
     login_path.style.strokeDasharray = "240, 1386";
 });
 
 /**
- *
+ * Moves svg path if password field is on focus.
  */
-document.getElementById("password").addEventListener('focus', function (e) {
+password.addEventListener('focus', function (e) {
     login_path.style.strokeDashoffset = "-344px";
     login_path.style.strokeDasharray = "240, 1386";
 });
 
 /**
- *
+ * Moves svg path if submit field is on focus.
  */
-document.getElementById("submit").addEventListener('focus', function (e) {
+submit.addEventListener('focus', function (e) {
     login_path.style.strokeDashoffset = "-730px";
     login_path.style.strokeDasharray = "530, 1386";
 });
@@ -84,7 +84,7 @@ sign_up.addEventListener("click", changeSignupColor);
 
 
 /**
- *
+ * Changes <b>login</b> button color if user clicked on it.
  */
 function changeLoginColor() {
     color1.style.stopColor = "#ff00ff";
@@ -92,7 +92,7 @@ function changeLoginColor() {
 }
 
 /**
- *
+ * Changes <b>sign up</b> button color if user clicked on it.
  */
 function changeSignupColor() {
     color1.style.stopColor = "#fffb00";
@@ -100,8 +100,9 @@ function changeSignupColor() {
 }
 
 const logo_path = document.getElementById("logo_path");
+
 /**
- *
+ * Moves svg logo path if user clicked on it.
  */
 logo_path.addEventListener("click", function (e) {
     if (logo_path.style.strokeDashoffset === "0") {

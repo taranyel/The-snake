@@ -1,14 +1,13 @@
 /**
- *
+ * Class represents user.
  */
-
 class User {
     username;
     password;
     record;
 
     /**
-     *
+     * Constructor, sets username password and user record to default empty values
      */
     constructor() {
         this.username = "";
@@ -17,34 +16,34 @@ class User {
     }
 
     /**
+     * Makes json object from user.
      *
-     * @returns {{password, record, username, image}}
+     * @returns {{password, record, username}} - returns user parameters in json format
      */
     createUser() {
         return {
             "username": this.username,
             "password": this.password,
-            "record": this.record,
-            "image": this.image
+            "record": this.record
         };
     }
 }
 
 /**
- *
+ * Class represents storage and manages storage functions.
  */
 class Storage {
     user;
 
     /**
-     *
+     * Constructor, creates new user.
      */
     constructor() {
         this.user = new User();
     }
 
     /**
-     *
+     * Waits for login when login button is clicked.
      */
     waitForLogin() {
         handleEvents.clearErrorsAndInputs();
@@ -54,21 +53,21 @@ class Storage {
     }
 
     /**
-     *
+     * Calls sign up function.
      */
     callSignUp = () => {
         this.signUp(this);
     }
 
     /**
-     *
+     * Calls login function.
      */
     callLogin = () => {
         this.login(this);
     }
 
     /**
-     *
+     * Waits for sign up, shows sign up form, when sign up button is clicked.
      */
     waitForSignUp() {
         handleEvents.clearErrorsAndInputs();
@@ -84,7 +83,8 @@ class Storage {
     }
 
     /**
-     *
+     * Checks if values from user are correct, if yes, logs user in (sets user in session storage),
+     * otherwise shows error message.
      */
     login() {
         const username_value = escapeSpecialChars(username.value);
@@ -107,10 +107,11 @@ class Storage {
     }
 
     /**
-     *
+     * Checks if values from user are correct, if yes, adds new user to the local storage and to the session storage,
+     * otherwise shows error message.
      */
     signUp() {
-        const validUserData = loginValidation();
+        const validUserData = signUpValidation();
         if (validUserData[0] && validUserData[1]) {
             if (localStorage.getItem(validUserData[0])) {
                 handleEvents.fillError(bad_username, "Account is already exists!");
@@ -119,15 +120,15 @@ class Storage {
                 this.user.password = validUserData[1];
 
                 localStorage.setItem(this.user.username, JSON.stringify(this.user.createUser()));
-
                 sessionStorage.setItem("logged_in", this.user.username);
+
                 handleEvents.hideLoginForm();
             }
         }
     }
 
     /**
-     *
+     * Logs user out (removes user data from session storage) and shows sign up screen.
      */
     logOut() {
         location.reload();
@@ -137,7 +138,7 @@ class Storage {
     }
 
     /**
-     *
+     * Asks user for account deletion, if user agrees, removes user data from local storage
      */
     deleteAccount() {
         if (window.confirm("Do you really want to delete your account?")) {
@@ -149,7 +150,7 @@ class Storage {
     }
 
     /**
-     *
+     * If new password from user is valid, changes user password and shows success message, otherwise shows error message.
      */
     changePassword() {
         const validNewPassword = validateNewPassword();
@@ -163,7 +164,7 @@ class Storage {
     }
 
     /**
-     *
+     * If new image from user is valid, changes user image, otherwise shows error message.
      */
     changeImage() {
         if (validateNewImage()) {
@@ -188,8 +189,8 @@ class Storage {
     }
 
     /**
-     *
-     * @returns {any}
+     * Gets logged-in user from session storage.
+     * @returns {any} - Returns logged-in user.
      */
     getLoggedInUser() {
         const username = sessionStorage.getItem("logged_in");
@@ -201,7 +202,7 @@ class Storage {
     }
 
     /**
-     *
+     * If new username from user is valid, changes user username, otherwise shows error message.
      */
     changeUsername() {
         const validNewUsername = validateNewUsername();
@@ -230,7 +231,7 @@ class Storage {
 }
 
 /**
- *
+ * Class handles different events in the document.
  */
 class HandleEvents {
 
@@ -242,7 +243,8 @@ class HandleEvents {
     logout;
 
     /**
-     *
+     * Gets html elements from document and set event listeners to buttons and fields in forms.
+     * Also shows username and image in menu section.
      */
     constructor() {
         this.logout = document.getElementById("logout_button");
@@ -272,35 +274,36 @@ class HandleEvents {
     }
 
     /**
+     * Fills given error field with given error message.
      *
-     * @param field
-     * @param message
+     * @param field - given error field
+     * @param message - given error message
      */
     fillError(field, message) {
         field.textContent = message;
     }
 
     /**
-     *
+     * Shows login form.
      */
     showLoginForm() {
         this.login_form.style.display = "flex";
     }
 
     /**
-     *
+     * Hides login form, shows username and image in the menu section.
      */
     hideLoginForm() {
         this.login_form.style.display = "none";
         this.nav.style.display = "flex";
         this.game_screen.style.display = "flex";
         this.logout.style.display = "flex";
-        handleEvents.showUsername();
-        handleEvents.showImage();
+        this.showUsername();
+        this.showImage();
     }
 
     /**
-     *
+     * Hides game screen.
      */
     hideGame() {
         this.logout.style.display = "none";
@@ -309,7 +312,7 @@ class HandleEvents {
     }
 
     /**
-     *
+     * Clears form fields and removes error messages.
      */
     clearErrorsAndInputs() {
         bad_password.textContent = "";
@@ -325,8 +328,9 @@ class HandleEvents {
     }
 
     /**
+     * Toggles buttons "login" and "sign up" according to user click.
      *
-     * @param forLogin
+     * @param forLogin - if <b>true</b> sets login button as active, otherwise sets sign up button as active
      */
     toggleLoginButtons(forLogin) {
         if (forLogin) {
@@ -339,7 +343,7 @@ class HandleEvents {
     }
 
     /**
-     *
+     * Toggles menu on click to the menu icon.
      */
     toggleMenu() {
         const menu = document.querySelector(".menu");
@@ -356,13 +360,16 @@ class HandleEvents {
     }
 
     /**
-     *
+     * Shows username in the menu section.
      */
     showUsername() {
         const username_show = document.querySelector(".user_name");
         username_show.textContent = sessionStorage.getItem("logged_in");
     }
 
+    /**
+     * Shows image in the menu section, if user does not have its own image, default image will be shown.
+     */
     showImage() {
         const image = document.querySelector(".user_data img");
         const user = storage.getLoggedInUser();
@@ -382,6 +389,9 @@ const storage = new Storage();
 const handleEvents = new HandleEvents();
 storage.waitForSignUp();
 
+/**
+ * Clears url hash.
+ */
 window.onload = function() {
     document.location.hash = "";
 }

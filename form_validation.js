@@ -13,9 +13,10 @@ const bad_new_image = document.getElementById("bad_new_image");
 
 
 /**
+ * Escapes special html characters for defence from XML Injection.
  *
- * @param str
- * @returns {*}
+ * @param str - given string from user
+ * @returns {String} - safe string
  */
 function escapeSpecialChars(str) {
     return str
@@ -27,13 +28,12 @@ function escapeSpecialChars(str) {
 }
 
 /**
- * Function is used for username validation.
+ * Validates username.
  *
  * @param username - given username from user
- * @param bad_username
- * @returns {String}
+ * @returns {String} - returns username value if validation passed
  */
-function validateUsername(username, bad_username) {
+function validateUsername(username) {
     if (!username) {
         bad_username.textContent = "You must fill this field!";
     } else {
@@ -49,12 +49,12 @@ function validateUsername(username, bad_username) {
 }
 
 /**
+ * Validates password.
  *
- * @param password
- * @param bad_password
- * @returns {String}
+ * @param password - given password from user
+ * @returns {String} - returns password value if validation passed
  */
-function validatePassword(password, bad_password) {
+function validatePassword(password) {
     if (!password) {
         bad_password.textContent = "You must fill this field!";
     } else {
@@ -70,22 +70,28 @@ function validatePassword(password, bad_password) {
 }
 
 /**
+ * Calls validation function for validation new username.
  *
- *
- * @returns {String}
+ * @returns {String} - returns new username value if validation passed
  */
 function validateNewUsername() {
-    return validateUsername(escapeSpecialChars(new_username.value), bad_new_username);
+    return validateUsername(escapeSpecialChars(new_username.value));
 }
 
 /**
+ * Calls validation function for validation new password.
  *
- * @returns {String}
+ * @returns {String} - returns new password value if validation passed
  */
 function validateNewPassword() {
-    return validatePassword(escapeSpecialChars(new_password.value), bad_new_password);
+    return validatePassword(escapeSpecialChars(new_password.value));
 }
 
+/**
+ * Validates image given from user.
+ *
+ * @returns {boolean} - returns <b>true</b> if validation passed, otherwise returns <b>false</b>.
+ */
 function validateNewImage() {
     if (new_image.files.length === 0) {
         bad_new_image.textContent = "Please upload new image";
@@ -102,9 +108,10 @@ function validateNewImage() {
 }
 
 /**
+ * Calls functions for username and password validation given from user.
  *
- * @returns {String[]}
+ * @returns {String[]} - returns username and password values if validation passed
  */
-function loginValidation() {
-    return [validateUsername(escapeSpecialChars(username.value), bad_username),validatePassword(escapeSpecialChars(password.value), bad_password)];
+function signUpValidation() {
+    return [validateUsername(escapeSpecialChars(username.value)),validatePassword(escapeSpecialChars(password.value))];
 }
