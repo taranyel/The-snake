@@ -176,7 +176,7 @@ class Storage {
 
             const reader = new FileReader();
 
-            reader.onload = function() {
+            reader.onload = function () {
                 if (reader.result.length > 3145728) {
                     bad_new_image.textContent = "Max. image size is 3MB";
                 } else {
@@ -234,13 +234,13 @@ class Storage {
  * Class handles different events in the document.
  */
 class HandleEvents {
-
     login_form;
     nav;
     game_screen;
     menu_button;
     delete_account;
     logout;
+    start_game_sound;
 
     /**
      * Gets html elements from document and set event listeners to buttons and fields in forms.
@@ -255,6 +255,7 @@ class HandleEvents {
         const submit_new_username = document.getElementById("submit_new_username");
         const submit_new_password = document.getElementById("submit_new_password");
         const submit_new_image = document.getElementById("submit_new_image");
+        this.start_game_sound = document.getElementById("start_game_sound");
 
         this.delete_account = document.getElementById("delete_account");
 
@@ -291,6 +292,24 @@ class HandleEvents {
     }
 
     /**
+     * Plays start game sound, catches exceptions.
+     */
+    playStartGameSound() {
+        this.start_game_sound.play().catch(error => {
+            console.log("Sound cannot be played because of: ", error);
+        });
+    }
+
+    /**
+     * Completely stops start game sound.
+     */
+    stopStartGameSound() {
+        console.log("huj")
+        this.start_game_sound.pause();
+        this.start_game_sound.currentTime = 0;
+    }
+
+    /**
      * Hides login form, shows username and image in the menu section.
      */
     hideLoginForm() {
@@ -300,6 +319,8 @@ class HandleEvents {
         this.logout.style.display = "flex";
         this.showUsername();
         this.showImage();
+
+        this.playStartGameSound();
     }
 
     /**
@@ -392,6 +413,6 @@ storage.waitForSignUp();
 /**
  * Clears url hash.
  */
-window.onload = function() {
+window.onload = function () {
     document.location.hash = "";
 }

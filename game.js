@@ -194,6 +194,7 @@ class Game {
     score_block
     game_block;
     nav;
+    game_sound;
 
 
     /**
@@ -207,6 +208,7 @@ class Game {
         this.score_block = document.querySelector(".score");
         this.nav = document.querySelector("nav");
         this.game_block = document.querySelector(".game_block");
+        this.game_sound = document.getElementById("game_sound");
 
 
         this.init();
@@ -303,6 +305,30 @@ class Game {
         }
     }
 
+    /**
+     * Plays game sound, catches exceptions, reduces sound volume.
+     */
+    playGameSound() {
+        this.game_sound.volume = 0.5;
+        this.game_sound.play().catch(error => {
+            console.log(error);
+        });
+    }
+
+    /**
+     * Pauses game sound.
+     */
+    pauseGameSound() {
+        this.game_sound.pause();
+    }
+
+    /**
+     * Completely stops game sound.
+     */
+    stopGameSound() {
+        this.game_sound.pause();
+        this.game_sound.currentTime = 0;
+    }
 
     /**
      * Starts new game.
@@ -319,6 +345,10 @@ class Game {
         const game_block = document.querySelector(".game");
         game_block.style.display = "flex";
         this.nav.classList.remove("start");
+
+        handleEvents.stopStartGameSound();
+        this.playGameSound();
+
         this.snake.createSnake();
         this.snake_id = setInterval(this.moveSnake.bind(this), this.speed);
         this.food_id = setInterval(this.generateFood.bind(this), 4000);
@@ -334,6 +364,7 @@ class Game {
         this.hidePauseGameButton();
         this.hideNewGameButton();
         this.clearIntervals();
+        this.pauseGameSound();
         document.body.removeEventListener('keydown', this);
     }
 
@@ -348,6 +379,7 @@ class Game {
         this.showNewGameButton();
         this.clearIntervals();
         this.setRecord();
+        this.stopGameSound();
         this.showEndGameScreen("The end");
     }
 
@@ -360,6 +392,7 @@ class Game {
         this.hideContinueGameButton();
         this.hideNewGameButton();
         this.showPauseGameButton();
+        this.playGameSound();
         document.body.addEventListener('keydown', this);
         this.snake_id = setInterval(this.moveSnake.bind(this), this.speed);
         this.food_id = setInterval(this.generateFood.bind(this), 4000);
@@ -398,8 +431,7 @@ class Game {
 
     /**
      * Generates random coordinates on the game board, checks if these coordinates are in snake, if not, draws new food
-     * on these coordinates. Sets new coordinates to the food item.
-     *
+     * (bug image) on these coordinates. Sets new coordinates to the food item.
      * @param food - given food item
      */
     drawFood(food) {
@@ -453,8 +485,12 @@ class Game {
     eatFood() {
         for (let i = 0; i < this.food.length; i++) {
             if ((this.snake.body[0].x === this.food[i].x) && (this.snake.body[0].y === this.food[i].y)) {
-                const sound = document.getElementById("eating_sound");
-                sound.play();
+
+                const sound = new Audio("sounds/eating.mp3");
+                sound.play().catch(error => {
+                    console.log("Sound cannot be played because of: ", error);
+                });
+
                 this.snake.grow();
                 this.food.splice(i, 1);
                 this.displayScore(this.snake.body.length - 1);
@@ -545,9 +581,12 @@ class Game {
             this.hidePauseGameButton();
             this.hideContinueGameButton();
             this.showEndGameScreen("Game over");
+            this.stopGameSound();
 
-            const sound = document.getElementById("game_over_sound");
-            sound.play();
+            const sound = new Audio("sounds/game_over.wav");
+            sound.play().catch(error => {
+                console.log("Sound cannot be played because of: ", error);
+            });
         }
     }
 
@@ -564,9 +603,12 @@ class Game {
             this.hidePauseGameButton();
             this.hideContinueGameButton();
             this.showEndGameScreen("Victory!!!");
+            this.stopGameSound();
 
-            const sound = document.getElementById("victory_sound");
-            sound.play();
+            const sound = new Audio("sounds/victory.mp3");
+            sound.play().catch(error => {
+                console.log("Sound cannot be played because of: ", error);
+            });
         }
     }
 

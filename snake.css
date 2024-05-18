@@ -242,7 +242,7 @@ audio {
 }
 
 .game_over canvas {
-    height: 90%;
+    height: 100%;
 }
 
 .game_over_score {
@@ -584,6 +584,7 @@ canvas {
     display: flex;
     flex-direction: column;
     flex: 1;
+    height: 87%;
 }
 
 .forms {
@@ -602,6 +603,7 @@ label {
 .container {
     display: flex;
     flex: 1;
+    height: 100%;
 }
 
 #login_svg {

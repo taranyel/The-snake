@@ -28,8 +28,9 @@
         margin-bottom: 50px;
     }
 
-    canvas {
-        width: 380px;
+    #game_over_h {
+        margin-bottom: unset;
+        font-size: 4em;
     }
 
     .score_block {
@@ -88,10 +89,18 @@
 
     .game_over_score {
         width: 100%;
-        height: 100%;
+        height: 70%;
     }
 
-    .game_over canvas {
-        width: 100%;
+    .score_block {
+        font-size: 1.5em;
+    }
+
+    .game_over_score #new_game {
+        margin-top: 50px;
+    }
+
+    canvas {
+        width: 90%;
     }
 }

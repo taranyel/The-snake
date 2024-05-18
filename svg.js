@@ -1,5 +1,5 @@
 /**
- * Creates and shows svg logo.
+ * Creates and shows svg logo, uses namespace.
  */
 (function createLogo(){
     const header = document.querySelector("header");

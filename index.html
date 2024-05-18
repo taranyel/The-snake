@@ -24,14 +24,11 @@
         </nav>
         <section class="game_block">
             <div class="game">
-                <audio controls id="eating_sound">
-                    <source src="sounds/eating.mp3">
+                <audio controls id="start_game_sound" loop>
+                    <source src="sounds/start_screen.mp3">
                 </audio>
-                <audio controls id="game_over_sound">
-                    <source src="sounds/game_over.wav">
-                </audio>
-                <audio controls id="victory_sound">
-                    <source src="sounds/victory.mp3">
+                <audio controls id="game_sound" loop>
+                    <source src="sounds/game.mp3">
                 </audio>
                 <img id="food_icon" src="images/food_icon.png" alt="food_icon">
                 <div class="score">
@@ -53,7 +50,7 @@
                 <i class="fa fa-bars" id="menu_button"></i>
                 <div class="menu">
                     <div class="user_data">
-                        <img src="" alt="icon">
+                        <img src="images/default_icon.png" alt="icon">
                         <h2 class="user_name">Username</h2>
                     </div>
 

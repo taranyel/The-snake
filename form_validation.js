@@ -42,7 +42,7 @@ function validateUsername(username) {
         } else if (username.length > 10) {
             bad_username.textContent = "Maximum 10 characters are allowed!"
         } else {
-            return username.value;
+            return username;
         }
     }
     return null;
@@ -63,7 +63,7 @@ function validatePassword(password) {
         } else if (password.length > 15) {
             bad_password.textContent = "Maximum 15 characters are allowed!"
         } else {
-            return password.value;
+            return password;
         }
     }
     return null;
