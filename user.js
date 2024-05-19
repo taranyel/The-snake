@@ -304,7 +304,6 @@ class HandleEvents {
      * Completely stops start game sound.
      */
     stopStartGameSound() {
-        console.log("huj")
         this.start_game_sound.pause();
         this.start_game_sound.currentTime = 0;
     }
@@ -320,6 +319,7 @@ class HandleEvents {
         this.showUsername();
         this.showImage();
 
+        console.log(localStorage)
         this.playStartGameSound();
     }
 

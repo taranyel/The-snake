@@ -212,10 +212,6 @@ class Game {
 
 
         this.init();
-
-        if (sessionStorage.getItem("logged_in") !== null) {
-            this.displayRecord(JSON.parse(localStorage[this.getUser()]).record);
-        }
     }
 
 
@@ -341,6 +337,8 @@ class Game {
         this.showFinishGameButton();
         this.hideContinueGameButton();
         this.hideNewGameButton();
+
+        this.displayRecord(JSON.parse(localStorage[this.getUser()]).record);
 
         const game_block = document.querySelector(".game");
         game_block.style.display = "flex";
