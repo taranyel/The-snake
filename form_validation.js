@@ -39,8 +39,8 @@ function validateUsername(username) {
     } else {
         if (username.length < 4) {
             bad_username.textContent = "Must contain at least 4 characters!"
-        } else if (username.length > 10) {
-            bad_username.textContent = "Maximum 10 characters are allowed!"
+        } else if (username.length > 15) {
+            bad_username.textContent = "Maximum 15 characters are allowed!"
         } else {
             return username;
         }
